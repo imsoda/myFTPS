@@ -1,0 +1,803 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		472471AA1ACE129800AECC2E /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472471A91ACE129800AECC2E /* ConnectViewController.swift */; };
+		472471B91ACE19CD00AECC2E /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 472471B81ACE19CD00AECC2E /* libcurl.a */; };
+		4724720B1ACE19D600AECC2E /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 472472091ACE19D600AECC2E /* libcrypto.a */; };
+		4724720C1ACE19D600AECC2E /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4724720A1ACE19D600AECC2E /* libssl.a */; };
+		472472121ACE1A6E00AECC2E /* Curl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724720F1ACE1A6E00AECC2E /* Curl.m */; };
+		472472131ACE1A6E00AECC2E /* OpenSSLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 472472111ACE1A6E00AECC2E /* OpenSSLHelper.m */; };
+		472472151ACE1A7A00AECC2E /* FTPSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472472141ACE1A7A00AECC2E /* FTPSClient.swift */; };
+		472472171ACE1AA000AECC2E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 472472161ACE1AA000AECC2E /* libz.dylib */; };
+		472472191ACE1AA700AECC2E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472472181ACE1AA700AECC2E /* Security.framework */; };
+		4724721C1ACE1B1800AECC2E /* FileListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4724721A1ACE1B1800AECC2E /* FileListItem.swift */; };
+		4724721D1ACE1B1800AECC2E /* FileListParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4724721B1ACE1B1800AECC2E /* FileListParser.swift */; };
+		47687E4D1ACFF7B000A765AF /* FileListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47687E4C1ACFF7B000A765AF /* FileListTableView.swift */; };
+		47687E501AD0030200A765AF /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 47687E4F1AD0030200A765AF /* Utils.m */; };
+		477AEEB01AD162CB00EE12A6 /* CertificateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 477AEEAF1AD162CB00EE12A6 /* CertificateView.m */; };
+		477AEEB21AD1631600EE12A6 /* CertificateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477AEEB11AD1631600EE12A6 /* CertificateViewController.swift */; };
+		4789AF541ACFD4B40084B011 /* FileListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4789AF531ACFD4B40084B011 /* FileListViewController.swift */; };
+		4789AF561ACFD4D80084B011 /* ServerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4789AF551ACFD4D80084B011 /* ServerListViewController.swift */; };
+		4789AF581ACFD9480084B011 /* FileCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4789AF571ACFD9480084B011 /* FileCellView.swift */; };
+		47A2FE9D1AD7E7FC00D247DB /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 47A2FE9C1AD7E7FC00D247DB /* README.md */; };
+		47A90DE71AD13F9D001A2170 /* RenameFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A90DE61AD13F9D001A2170 /* RenameFileViewController.swift */; };
+		47A90DE91AD1487D001A2170 /* ChangePermissionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A90DE81AD1487D001A2170 /* ChangePermissionsViewController.swift */; };
+		47A90DEB1AD148A1001A2170 /* DeleteFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A90DEA1AD148A1001A2170 /* DeleteFileViewController.swift */; };
+		47A9D0D01AD0134200322FCE /* MakeDirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A9D0CF1AD0134200322FCE /* MakeDirectoryViewController.swift */; };
+		47B901441AD0E064000FABF8 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B901431AD0E064000FABF8 /* UploadViewController.swift */; };
+		47B901461AD0E077000FABF8 /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B901451AD0E077000FABF8 /* DownloadViewController.swift */; };
+		47C0D7591AD240BC0026624E /* ServerList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C0D7581AD240BC0026624E /* ServerList.swift */; };
+		47DB2FF61ACCB9470025267A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB2FF51ACCB9470025267A /* AppDelegate.swift */; };
+		47DB2FF81ACCB9470025267A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB2FF71ACCB9470025267A /* MainViewController.swift */; };
+		47DB2FFA1ACCB9470025267A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47DB2FF91ACCB9470025267A /* Images.xcassets */; };
+		47DB2FFD1ACCB9470025267A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47DB2FFB1ACCB9470025267A /* Main.storyboard */; };
+		47DB30091ACCB9480025267A /* myFTPSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB30081ACCB9480025267A /* myFTPSTests.swift */; };
+		47DE28E31AD8A4B700EC8460 /* FileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DE28E21AD8A4B700EC8460 /* FileRowView.swift */; };
+		47F3817B1ACFB5570015C62A /* FTPSSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F3817A1ACFB5570015C62A /* FTPSSession.swift */; };
+		47FE13A81ACE42E000E149B2 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FE13A71ACE42E000E149B2 /* WindowController.swift */; };
+		47FE14041ACE5BF900E149B2 /* FTPSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FE14031ACE5BF900E149B2 /* FTPSManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		47DB30031ACCB9470025267A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47DB2FE81ACCB9470025267A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 47DB2FEF1ACCB9470025267A;
+			remoteInfo = myFTPS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		472471A91ACE129800AECC2E /* ConnectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
+		472471AE1ACE19CD00AECC2E /* curl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curl.h; sourceTree = "<group>"; };
+		472471AF1ACE19CD00AECC2E /* curlbuild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlbuild.h; sourceTree = "<group>"; };
+		472471B01ACE19CD00AECC2E /* curlrules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlrules.h; sourceTree = "<group>"; };
+		472471B11ACE19CD00AECC2E /* curlver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlver.h; sourceTree = "<group>"; };
+		472471B21ACE19CD00AECC2E /* easy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = easy.h; sourceTree = "<group>"; };
+		472471B31ACE19CD00AECC2E /* mprintf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mprintf.h; sourceTree = "<group>"; };
+		472471B41ACE19CD00AECC2E /* multi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = multi.h; sourceTree = "<group>"; };
+		472471B51ACE19CD00AECC2E /* stdcheaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stdcheaders.h; sourceTree = "<group>"; };
+		472471B61ACE19CD00AECC2E /* typecheck-gcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "typecheck-gcc.h"; sourceTree = "<group>"; };
+		472471B81ACE19CD00AECC2E /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcurl.a; sourceTree = "<group>"; };
+		472471BD1ACE19D600AECC2E /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
+		472471BE1ACE19D600AECC2E /* asn1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asn1.h; sourceTree = "<group>"; };
+		472471BF1ACE19D600AECC2E /* asn1_mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asn1_mac.h; sourceTree = "<group>"; };
+		472471C01ACE19D600AECC2E /* asn1t.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asn1t.h; sourceTree = "<group>"; };
+		472471C11ACE19D600AECC2E /* bio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bio.h; sourceTree = "<group>"; };
+		472471C21ACE19D600AECC2E /* blowfish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blowfish.h; sourceTree = "<group>"; };
+		472471C31ACE19D600AECC2E /* bn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bn.h; sourceTree = "<group>"; };
+		472471C41ACE19D600AECC2E /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
+		472471C51ACE19D600AECC2E /* camellia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camellia.h; sourceTree = "<group>"; };
+		472471C61ACE19D600AECC2E /* cast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cast.h; sourceTree = "<group>"; };
+		472471C71ACE19D600AECC2E /* cmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmac.h; sourceTree = "<group>"; };
+		472471C81ACE19D600AECC2E /* cms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cms.h; sourceTree = "<group>"; };
+		472471C91ACE19D600AECC2E /* comp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comp.h; sourceTree = "<group>"; };
+		472471CA1ACE19D600AECC2E /* conf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = conf.h; sourceTree = "<group>"; };
+		472471CB1ACE19D600AECC2E /* conf_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = conf_api.h; sourceTree = "<group>"; };
+		472471CC1ACE19D600AECC2E /* crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto.h; sourceTree = "<group>"; };
+		472471CD1ACE19D600AECC2E /* des.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = des.h; sourceTree = "<group>"; };
+		472471CE1ACE19D600AECC2E /* des_old.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = des_old.h; sourceTree = "<group>"; };
+		472471CF1ACE19D600AECC2E /* dh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dh.h; sourceTree = "<group>"; };
+		472471D01ACE19D600AECC2E /* dsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dsa.h; sourceTree = "<group>"; };
+		472471D11ACE19D600AECC2E /* dso.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dso.h; sourceTree = "<group>"; };
+		472471D21ACE19D600AECC2E /* dtls1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dtls1.h; sourceTree = "<group>"; };
+		472471D31ACE19D600AECC2E /* e_os2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = e_os2.h; sourceTree = "<group>"; };
+		472471D41ACE19D600AECC2E /* ebcdic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ebcdic.h; sourceTree = "<group>"; };
+		472471D51ACE19D600AECC2E /* ec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ec.h; sourceTree = "<group>"; };
+		472471D61ACE19D600AECC2E /* ecdh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ecdh.h; sourceTree = "<group>"; };
+		472471D71ACE19D600AECC2E /* ecdsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ecdsa.h; sourceTree = "<group>"; };
+		472471D81ACE19D600AECC2E /* engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = engine.h; sourceTree = "<group>"; };
+		472471D91ACE19D600AECC2E /* err.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = err.h; sourceTree = "<group>"; };
+		472471DA1ACE19D600AECC2E /* evp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = evp.h; sourceTree = "<group>"; };
+		472471DB1ACE19D600AECC2E /* hmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hmac.h; sourceTree = "<group>"; };
+		472471DC1ACE19D600AECC2E /* idea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = idea.h; sourceTree = "<group>"; };
+		472471DD1ACE19D600AECC2E /* krb5_asn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = krb5_asn.h; sourceTree = "<group>"; };
+		472471DE1ACE19D600AECC2E /* kssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kssl.h; sourceTree = "<group>"; };
+		472471DF1ACE19D600AECC2E /* lhash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lhash.h; sourceTree = "<group>"; };
+		472471E01ACE19D600AECC2E /* md4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md4.h; sourceTree = "<group>"; };
+		472471E11ACE19D600AECC2E /* md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5.h; sourceTree = "<group>"; };
+		472471E21ACE19D600AECC2E /* mdc2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mdc2.h; sourceTree = "<group>"; };
+		472471E31ACE19D600AECC2E /* modes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = modes.h; sourceTree = "<group>"; };
+		472471E41ACE19D600AECC2E /* obj_mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = obj_mac.h; sourceTree = "<group>"; };
+		472471E51ACE19D600AECC2E /* objects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objects.h; sourceTree = "<group>"; };
+		472471E61ACE19D600AECC2E /* ocsp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ocsp.h; sourceTree = "<group>"; };
+		472471E71ACE19D600AECC2E /* opensslconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = opensslconf.h; sourceTree = "<group>"; };
+		472471E81ACE19D600AECC2E /* opensslv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = opensslv.h; sourceTree = "<group>"; };
+		472471E91ACE19D600AECC2E /* ossl_typ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ossl_typ.h; sourceTree = "<group>"; };
+		472471EA1ACE19D600AECC2E /* pem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pem.h; sourceTree = "<group>"; };
+		472471EB1ACE19D600AECC2E /* pem2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pem2.h; sourceTree = "<group>"; };
+		472471EC1ACE19D600AECC2E /* pkcs12.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pkcs12.h; sourceTree = "<group>"; };
+		472471ED1ACE19D600AECC2E /* pkcs7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pkcs7.h; sourceTree = "<group>"; };
+		472471EE1ACE19D600AECC2E /* pqueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pqueue.h; sourceTree = "<group>"; };
+		472471EF1ACE19D600AECC2E /* rand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rand.h; sourceTree = "<group>"; };
+		472471F01ACE19D600AECC2E /* rc2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rc2.h; sourceTree = "<group>"; };
+		472471F11ACE19D600AECC2E /* rc4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rc4.h; sourceTree = "<group>"; };
+		472471F21ACE19D600AECC2E /* ripemd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ripemd.h; sourceTree = "<group>"; };
+		472471F31ACE19D600AECC2E /* rsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rsa.h; sourceTree = "<group>"; };
+		472471F41ACE19D600AECC2E /* safestack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = safestack.h; sourceTree = "<group>"; };
+		472471F51ACE19D600AECC2E /* seed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = seed.h; sourceTree = "<group>"; };
+		472471F61ACE19D600AECC2E /* sha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sha.h; sourceTree = "<group>"; };
+		472471F71ACE19D600AECC2E /* srp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = srp.h; sourceTree = "<group>"; };
+		472471F81ACE19D600AECC2E /* srtp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = srtp.h; sourceTree = "<group>"; };
+		472471F91ACE19D600AECC2E /* ssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssl.h; sourceTree = "<group>"; };
+		472471FA1ACE19D600AECC2E /* ssl2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssl2.h; sourceTree = "<group>"; };
+		472471FB1ACE19D600AECC2E /* ssl23.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssl23.h; sourceTree = "<group>"; };
+		472471FC1ACE19D600AECC2E /* ssl3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssl3.h; sourceTree = "<group>"; };
+		472471FD1ACE19D600AECC2E /* stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack.h; sourceTree = "<group>"; };
+		472471FE1ACE19D600AECC2E /* symhacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = symhacks.h; sourceTree = "<group>"; };
+		472471FF1ACE19D600AECC2E /* tls1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tls1.h; sourceTree = "<group>"; };
+		472472001ACE19D600AECC2E /* ts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ts.h; sourceTree = "<group>"; };
+		472472011ACE19D600AECC2E /* txt_db.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = txt_db.h; sourceTree = "<group>"; };
+		472472021ACE19D600AECC2E /* ui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ui.h; sourceTree = "<group>"; };
+		472472031ACE19D600AECC2E /* ui_compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ui_compat.h; sourceTree = "<group>"; };
+		472472041ACE19D600AECC2E /* whrlpool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = whrlpool.h; sourceTree = "<group>"; };
+		472472051ACE19D600AECC2E /* x509.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509.h; sourceTree = "<group>"; };
+		472472061ACE19D600AECC2E /* x509_vfy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509_vfy.h; sourceTree = "<group>"; };
+		472472071ACE19D600AECC2E /* x509v3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509v3.h; sourceTree = "<group>"; };
+		472472091ACE19D600AECC2E /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		4724720A1ACE19D600AECC2E /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
+		4724720D1ACE1A6E00AECC2E /* myFTPS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "myFTPS-Bridging-Header.h"; sourceTree = "<group>"; };
+		4724720E1ACE1A6E00AECC2E /* Curl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Curl.h; sourceTree = "<group>"; };
+		4724720F1ACE1A6E00AECC2E /* Curl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Curl.m; sourceTree = "<group>"; };
+		472472101ACE1A6E00AECC2E /* OpenSSLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenSSLHelper.h; sourceTree = "<group>"; };
+		472472111ACE1A6E00AECC2E /* OpenSSLHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenSSLHelper.m; sourceTree = "<group>"; };
+		472472141ACE1A7A00AECC2E /* FTPSClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTPSClient.swift; sourceTree = "<group>"; };
+		472472161ACE1AA000AECC2E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		472472181ACE1AA700AECC2E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		4724721A1ACE1B1800AECC2E /* FileListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListItem.swift; sourceTree = "<group>"; };
+		4724721B1ACE1B1800AECC2E /* FileListParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListParser.swift; sourceTree = "<group>"; };
+		47687E4C1ACFF7B000A765AF /* FileListTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListTableView.swift; sourceTree = "<group>"; };
+		47687E4E1AD0030200A765AF /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		47687E4F1AD0030200A765AF /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		477AEEAE1AD162CB00EE12A6 /* CertificateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CertificateView.h; sourceTree = "<group>"; };
+		477AEEAF1AD162CB00EE12A6 /* CertificateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CertificateView.m; sourceTree = "<group>"; };
+		477AEEB11AD1631600EE12A6 /* CertificateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateViewController.swift; sourceTree = "<group>"; };
+		4789AF531ACFD4B40084B011 /* FileListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListViewController.swift; sourceTree = "<group>"; };
+		4789AF551ACFD4D80084B011 /* ServerListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerListViewController.swift; sourceTree = "<group>"; };
+		4789AF571ACFD9480084B011 /* FileCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileCellView.swift; sourceTree = "<group>"; };
+		47A2FE9C1AD7E7FC00D247DB /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		47A90DE61AD13F9D001A2170 /* RenameFileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenameFileViewController.swift; sourceTree = "<group>"; };
+		47A90DE81AD1487D001A2170 /* ChangePermissionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePermissionsViewController.swift; sourceTree = "<group>"; };
+		47A90DEA1AD148A1001A2170 /* DeleteFileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteFileViewController.swift; sourceTree = "<group>"; };
+		47A9D0CF1AD0134200322FCE /* MakeDirectoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MakeDirectoryViewController.swift; sourceTree = "<group>"; };
+		47B901431AD0E064000FABF8 /* UploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
+		47B901451AD0E077000FABF8 /* DownloadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
+		47C0D7581AD240BC0026624E /* ServerList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerList.swift; sourceTree = "<group>"; };
+		47DB2FF01ACCB9470025267A /* myFTPS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myFTPS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		47DB2FF41ACCB9470025267A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		47DB2FF51ACCB9470025267A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		47DB2FF71ACCB9470025267A /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		47DB2FF91ACCB9470025267A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		47DB2FFC1ACCB9470025267A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		47DB30021ACCB9470025267A /* myFTPSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = myFTPSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		47DB30071ACCB9480025267A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		47DB30081ACCB9480025267A /* myFTPSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myFTPSTests.swift; sourceTree = "<group>"; };
+		47DE28E21AD8A4B700EC8460 /* FileRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileRowView.swift; sourceTree = "<group>"; };
+		47F3817A1ACFB5570015C62A /* FTPSSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTPSSession.swift; sourceTree = "<group>"; };
+		47FE13A71ACE42E000E149B2 /* WindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
+		47FE14031ACE5BF900E149B2 /* FTPSManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTPSManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		47DB2FED1ACCB9470025267A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				472472191ACE1AA700AECC2E /* Security.framework in Frameworks */,
+				472472171ACE1AA000AECC2E /* libz.dylib in Frameworks */,
+				4724720B1ACE19D600AECC2E /* libcrypto.a in Frameworks */,
+				472471B91ACE19CD00AECC2E /* libcurl.a in Frameworks */,
+				4724720C1ACE19D600AECC2E /* libssl.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47DB2FFF1ACCB9470025267A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		472471AB1ACE19CD00AECC2E /* curl */ = {
+			isa = PBXGroup;
+			children = (
+				472471AC1ACE19CD00AECC2E /* include */,
+				472471B71ACE19CD00AECC2E /* lib */,
+			);
+			path = curl;
+			sourceTree = "<group>";
+		};
+		472471AC1ACE19CD00AECC2E /* include */ = {
+			isa = PBXGroup;
+			children = (
+				472471AD1ACE19CD00AECC2E /* curl */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		472471AD1ACE19CD00AECC2E /* curl */ = {
+			isa = PBXGroup;
+			children = (
+				472471AE1ACE19CD00AECC2E /* curl.h */,
+				472471AF1ACE19CD00AECC2E /* curlbuild.h */,
+				472471B01ACE19CD00AECC2E /* curlrules.h */,
+				472471B11ACE19CD00AECC2E /* curlver.h */,
+				472471B21ACE19CD00AECC2E /* easy.h */,
+				472471B31ACE19CD00AECC2E /* mprintf.h */,
+				472471B41ACE19CD00AECC2E /* multi.h */,
+				472471B51ACE19CD00AECC2E /* stdcheaders.h */,
+				472471B61ACE19CD00AECC2E /* typecheck-gcc.h */,
+			);
+			path = curl;
+			sourceTree = "<group>";
+		};
+		472471B71ACE19CD00AECC2E /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				472471B81ACE19CD00AECC2E /* libcurl.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		472471BA1ACE19D600AECC2E /* openssl */ = {
+			isa = PBXGroup;
+			children = (
+				472471BB1ACE19D600AECC2E /* include */,
+				472472081ACE19D600AECC2E /* lib */,
+			);
+			path = openssl;
+			sourceTree = "<group>";
+		};
+		472471BB1ACE19D600AECC2E /* include */ = {
+			isa = PBXGroup;
+			children = (
+				472471BC1ACE19D600AECC2E /* openssl */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		472471BC1ACE19D600AECC2E /* openssl */ = {
+			isa = PBXGroup;
+			children = (
+				472471BD1ACE19D600AECC2E /* aes.h */,
+				472471BE1ACE19D600AECC2E /* asn1.h */,
+				472471BF1ACE19D600AECC2E /* asn1_mac.h */,
+				472471C01ACE19D600AECC2E /* asn1t.h */,
+				472471C11ACE19D600AECC2E /* bio.h */,
+				472471C21ACE19D600AECC2E /* blowfish.h */,
+				472471C31ACE19D600AECC2E /* bn.h */,
+				472471C41ACE19D600AECC2E /* buffer.h */,
+				472471C51ACE19D600AECC2E /* camellia.h */,
+				472471C61ACE19D600AECC2E /* cast.h */,
+				472471C71ACE19D600AECC2E /* cmac.h */,
+				472471C81ACE19D600AECC2E /* cms.h */,
+				472471C91ACE19D600AECC2E /* comp.h */,
+				472471CA1ACE19D600AECC2E /* conf.h */,
+				472471CB1ACE19D600AECC2E /* conf_api.h */,
+				472471CC1ACE19D600AECC2E /* crypto.h */,
+				472471CD1ACE19D600AECC2E /* des.h */,
+				472471CE1ACE19D600AECC2E /* des_old.h */,
+				472471CF1ACE19D600AECC2E /* dh.h */,
+				472471D01ACE19D600AECC2E /* dsa.h */,
+				472471D11ACE19D600AECC2E /* dso.h */,
+				472471D21ACE19D600AECC2E /* dtls1.h */,
+				472471D31ACE19D600AECC2E /* e_os2.h */,
+				472471D41ACE19D600AECC2E /* ebcdic.h */,
+				472471D51ACE19D600AECC2E /* ec.h */,
+				472471D61ACE19D600AECC2E /* ecdh.h */,
+				472471D71ACE19D600AECC2E /* ecdsa.h */,
+				472471D81ACE19D600AECC2E /* engine.h */,
+				472471D91ACE19D600AECC2E /* err.h */,
+				472471DA1ACE19D600AECC2E /* evp.h */,
+				472471DB1ACE19D600AECC2E /* hmac.h */,
+				472471DC1ACE19D600AECC2E /* idea.h */,
+				472471DD1ACE19D600AECC2E /* krb5_asn.h */,
+				472471DE1ACE19D600AECC2E /* kssl.h */,
+				472471DF1ACE19D600AECC2E /* lhash.h */,
+				472471E01ACE19D600AECC2E /* md4.h */,
+				472471E11ACE19D600AECC2E /* md5.h */,
+				472471E21ACE19D600AECC2E /* mdc2.h */,
+				472471E31ACE19D600AECC2E /* modes.h */,
+				472471E41ACE19D600AECC2E /* obj_mac.h */,
+				472471E51ACE19D600AECC2E /* objects.h */,
+				472471E61ACE19D600AECC2E /* ocsp.h */,
+				472471E71ACE19D600AECC2E /* opensslconf.h */,
+				472471E81ACE19D600AECC2E /* opensslv.h */,
+				472471E91ACE19D600AECC2E /* ossl_typ.h */,
+				472471EA1ACE19D600AECC2E /* pem.h */,
+				472471EB1ACE19D600AECC2E /* pem2.h */,
+				472471EC1ACE19D600AECC2E /* pkcs12.h */,
+				472471ED1ACE19D600AECC2E /* pkcs7.h */,
+				472471EE1ACE19D600AECC2E /* pqueue.h */,
+				472471EF1ACE19D600AECC2E /* rand.h */,
+				472471F01ACE19D600AECC2E /* rc2.h */,
+				472471F11ACE19D600AECC2E /* rc4.h */,
+				472471F21ACE19D600AECC2E /* ripemd.h */,
+				472471F31ACE19D600AECC2E /* rsa.h */,
+				472471F41ACE19D600AECC2E /* safestack.h */,
+				472471F51ACE19D600AECC2E /* seed.h */,
+				472471F61ACE19D600AECC2E /* sha.h */,
+				472471F71ACE19D600AECC2E /* srp.h */,
+				472471F81ACE19D600AECC2E /* srtp.h */,
+				472471F91ACE19D600AECC2E /* ssl.h */,
+				472471FA1ACE19D600AECC2E /* ssl2.h */,
+				472471FB1ACE19D600AECC2E /* ssl23.h */,
+				472471FC1ACE19D600AECC2E /* ssl3.h */,
+				472471FD1ACE19D600AECC2E /* stack.h */,
+				472471FE1ACE19D600AECC2E /* symhacks.h */,
+				472471FF1ACE19D600AECC2E /* tls1.h */,
+				472472001ACE19D600AECC2E /* ts.h */,
+				472472011ACE19D600AECC2E /* txt_db.h */,
+				472472021ACE19D600AECC2E /* ui.h */,
+				472472031ACE19D600AECC2E /* ui_compat.h */,
+				472472041ACE19D600AECC2E /* whrlpool.h */,
+				472472051ACE19D600AECC2E /* x509.h */,
+				472472061ACE19D600AECC2E /* x509_vfy.h */,
+				472472071ACE19D600AECC2E /* x509v3.h */,
+			);
+			path = openssl;
+			sourceTree = "<group>";
+		};
+		472472081ACE19D600AECC2E /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				472472091ACE19D600AECC2E /* libcrypto.a */,
+				4724720A1ACE19D600AECC2E /* libssl.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		47DB2FE71ACCB9470025267A = {
+			isa = PBXGroup;
+			children = (
+				47A2FE9C1AD7E7FC00D247DB /* README.md */,
+				472472181ACE1AA700AECC2E /* Security.framework */,
+				472472161ACE1AA000AECC2E /* libz.dylib */,
+				472471AB1ACE19CD00AECC2E /* curl */,
+				472471BA1ACE19D600AECC2E /* openssl */,
+				47DB2FF21ACCB9470025267A /* myFTPS */,
+				47DB30051ACCB9470025267A /* myFTPSTests */,
+				47DB2FF11ACCB9470025267A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		47DB2FF11ACCB9470025267A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				47DB2FF01ACCB9470025267A /* myFTPS.app */,
+				47DB30021ACCB9470025267A /* myFTPSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		47DB2FF21ACCB9470025267A /* myFTPS */ = {
+			isa = PBXGroup;
+			children = (
+				47DB2FF51ACCB9470025267A /* AppDelegate.swift */,
+				47FE13A71ACE42E000E149B2 /* WindowController.swift */,
+				47DB2FF71ACCB9470025267A /* MainViewController.swift */,
+				47DB2FFB1ACCB9470025267A /* Main.storyboard */,
+				4789AF531ACFD4B40084B011 /* FileListViewController.swift */,
+				47687E4C1ACFF7B000A765AF /* FileListTableView.swift */,
+				47DE28E21AD8A4B700EC8460 /* FileRowView.swift */,
+				4789AF571ACFD9480084B011 /* FileCellView.swift */,
+				4789AF551ACFD4D80084B011 /* ServerListViewController.swift */,
+				47C0D7581AD240BC0026624E /* ServerList.swift */,
+				472471A91ACE129800AECC2E /* ConnectViewController.swift */,
+				47A9D0CF1AD0134200322FCE /* MakeDirectoryViewController.swift */,
+				47A90DE61AD13F9D001A2170 /* RenameFileViewController.swift */,
+				47A90DE81AD1487D001A2170 /* ChangePermissionsViewController.swift */,
+				47A90DEA1AD148A1001A2170 /* DeleteFileViewController.swift */,
+				47B901431AD0E064000FABF8 /* UploadViewController.swift */,
+				47B901451AD0E077000FABF8 /* DownloadViewController.swift */,
+				477AEEB11AD1631600EE12A6 /* CertificateViewController.swift */,
+				47FE14031ACE5BF900E149B2 /* FTPSManager.swift */,
+				47F3817A1ACFB5570015C62A /* FTPSSession.swift */,
+				472472141ACE1A7A00AECC2E /* FTPSClient.swift */,
+				4724721A1ACE1B1800AECC2E /* FileListItem.swift */,
+				4724721B1ACE1B1800AECC2E /* FileListParser.swift */,
+				4724720E1ACE1A6E00AECC2E /* Curl.h */,
+				4724720F1ACE1A6E00AECC2E /* Curl.m */,
+				472472101ACE1A6E00AECC2E /* OpenSSLHelper.h */,
+				472472111ACE1A6E00AECC2E /* OpenSSLHelper.m */,
+				47687E4E1AD0030200A765AF /* Utils.h */,
+				47687E4F1AD0030200A765AF /* Utils.m */,
+				477AEEAE1AD162CB00EE12A6 /* CertificateView.h */,
+				477AEEAF1AD162CB00EE12A6 /* CertificateView.m */,
+				4724720D1ACE1A6E00AECC2E /* myFTPS-Bridging-Header.h */,
+				47DB2FF91ACCB9470025267A /* Images.xcassets */,
+				47DB2FF31ACCB9470025267A /* Supporting Files */,
+			);
+			path = myFTPS;
+			sourceTree = "<group>";
+		};
+		47DB2FF31ACCB9470025267A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				47DB2FF41ACCB9470025267A /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		47DB30051ACCB9470025267A /* myFTPSTests */ = {
+			isa = PBXGroup;
+			children = (
+				47DB30081ACCB9480025267A /* myFTPSTests.swift */,
+				47DB30061ACCB9470025267A /* Supporting Files */,
+			);
+			path = myFTPSTests;
+			sourceTree = "<group>";
+		};
+		47DB30061ACCB9470025267A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				47DB30071ACCB9480025267A /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		47DB2FEF1ACCB9470025267A /* myFTPS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 47DB300C1ACCB9480025267A /* Build configuration list for PBXNativeTarget "myFTPS" */;
+			buildPhases = (
+				47DB2FEC1ACCB9470025267A /* Sources */,
+				47DB2FED1ACCB9470025267A /* Frameworks */,
+				47DB2FEE1ACCB9470025267A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = myFTPS;
+			productName = myFTPS;
+			productReference = 47DB2FF01ACCB9470025267A /* myFTPS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		47DB30011ACCB9470025267A /* myFTPSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 47DB300F1ACCB9480025267A /* Build configuration list for PBXNativeTarget "myFTPSTests" */;
+			buildPhases = (
+				47DB2FFE1ACCB9470025267A /* Sources */,
+				47DB2FFF1ACCB9470025267A /* Frameworks */,
+				47DB30001ACCB9470025267A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				47DB30041ACCB9470025267A /* PBXTargetDependency */,
+			);
+			name = myFTPSTests;
+			productName = myFTPSTests;
+			productReference = 47DB30021ACCB9470025267A /* myFTPSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		47DB2FE81ACCB9470025267A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = "CX5 SOFTWARE";
+				TargetAttributes = {
+					47DB2FEF1ACCB9470025267A = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					47DB30011ACCB9470025267A = {
+						CreatedOnToolsVersion = 6.2;
+						TestTargetID = 47DB2FEF1ACCB9470025267A;
+					};
+				};
+			};
+			buildConfigurationList = 47DB2FEB1ACCB9470025267A /* Build configuration list for PBXProject "myFTPS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 47DB2FE71ACCB9470025267A;
+			productRefGroup = 47DB2FF11ACCB9470025267A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				47DB2FEF1ACCB9470025267A /* myFTPS */,
+				47DB30011ACCB9470025267A /* myFTPSTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		47DB2FEE1ACCB9470025267A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47DB2FFA1ACCB9470025267A /* Images.xcassets in Resources */,
+				47DB2FFD1ACCB9470025267A /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47DB30001ACCB9470025267A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		47DB2FEC1ACCB9470025267A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47DE28E31AD8A4B700EC8460 /* FileRowView.swift in Sources */,
+				47A90DE71AD13F9D001A2170 /* RenameFileViewController.swift in Sources */,
+				47C0D7591AD240BC0026624E /* ServerList.swift in Sources */,
+				47687E4D1ACFF7B000A765AF /* FileListTableView.swift in Sources */,
+				4724721D1ACE1B1800AECC2E /* FileListParser.swift in Sources */,
+				47A2FE9D1AD7E7FC00D247DB /* README.md in Sources */,
+				472472131ACE1A6E00AECC2E /* OpenSSLHelper.m in Sources */,
+				47687E501AD0030200A765AF /* Utils.m in Sources */,
+				4789AF541ACFD4B40084B011 /* FileListViewController.swift in Sources */,
+				47FE14041ACE5BF900E149B2 /* FTPSManager.swift in Sources */,
+				472472151ACE1A7A00AECC2E /* FTPSClient.swift in Sources */,
+				477AEEB01AD162CB00EE12A6 /* CertificateView.m in Sources */,
+				472471AA1ACE129800AECC2E /* ConnectViewController.swift in Sources */,
+				47A90DEB1AD148A1001A2170 /* DeleteFileViewController.swift in Sources */,
+				47B901461AD0E077000FABF8 /* DownloadViewController.swift in Sources */,
+				47A90DE91AD1487D001A2170 /* ChangePermissionsViewController.swift in Sources */,
+				4789AF581ACFD9480084B011 /* FileCellView.swift in Sources */,
+				47FE13A81ACE42E000E149B2 /* WindowController.swift in Sources */,
+				47DB2FF81ACCB9470025267A /* MainViewController.swift in Sources */,
+				4789AF561ACFD4D80084B011 /* ServerListViewController.swift in Sources */,
+				47A9D0D01AD0134200322FCE /* MakeDirectoryViewController.swift in Sources */,
+				47B901441AD0E064000FABF8 /* UploadViewController.swift in Sources */,
+				47DB2FF61ACCB9470025267A /* AppDelegate.swift in Sources */,
+				477AEEB21AD1631600EE12A6 /* CertificateViewController.swift in Sources */,
+				4724721C1ACE1B1800AECC2E /* FileListItem.swift in Sources */,
+				472472121ACE1A6E00AECC2E /* Curl.m in Sources */,
+				47F3817B1ACFB5570015C62A /* FTPSSession.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47DB2FFE1ACCB9470025267A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47DB30091ACCB9480025267A /* myFTPSTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		47DB30041ACCB9470025267A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 47DB2FEF1ACCB9470025267A /* myFTPS */;
+			targetProxy = 47DB30031ACCB9470025267A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		47DB2FFB1ACCB9470025267A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				47DB2FFC1ACCB9470025267A /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		47DB300A1ACCB9480025267A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/openssl/include",
+					"$(SRCROOT)/curl/include",
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		47DB300B1ACCB9480025267A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/openssl/include",
+					"$(SRCROOT)/curl/include",
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		47DB300D1ACCB9480025267A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = myFTPS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/curl/lib",
+					"$(PROJECT_DIR)/openssl/lib",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "myFTPS/myFTPS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		47DB300E1ACCB9480025267A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = myFTPS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/curl/lib",
+					"$(PROJECT_DIR)/openssl/lib",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "myFTPS/myFTPS-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		47DB30101ACCB9480025267A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = myFTPSTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/myFTPS.app/Contents/MacOS/myFTPS";
+			};
+			name = Debug;
+		};
+		47DB30111ACCB9480025267A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = myFTPSTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/myFTPS.app/Contents/MacOS/myFTPS";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		47DB2FEB1ACCB9470025267A /* Build configuration list for PBXProject "myFTPS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				47DB300A1ACCB9480025267A /* Debug */,
+				47DB300B1ACCB9480025267A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		47DB300C1ACCB9480025267A /* Build configuration list for PBXNativeTarget "myFTPS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				47DB300D1ACCB9480025267A /* Debug */,
+				47DB300E1ACCB9480025267A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		47DB300F1ACCB9480025267A /* Build configuration list for PBXNativeTarget "myFTPSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				47DB30101ACCB9480025267A /* Debug */,
+				47DB30111ACCB9480025267A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 47DB2FE81ACCB9470025267A /* Project object */;
+}
