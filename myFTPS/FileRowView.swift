@@ -25,8 +25,8 @@ THE SOFTWARE.
 import Foundation
 
 class FileRowView : NSTableRowView {
-  override func drawSelectionInRect(dirtyRect: NSRect) {
-    if self.selectionHighlightStyle != NSTableViewSelectionHighlightStyle.None {
+  override func drawSelection(in dirtyRect: NSRect) {
+    if self.selectionHighlightStyle != NSTableViewSelectionHighlightStyle.none {
 //      let selectionRect = NSInsetRect(self.bounds, 0.5, 0.5)
       let selectionRect = NSMakeRect(1.0, 2.0, self.bounds.size.width - 2.0, self.bounds.size.height - 2.0)
       NSColor(calibratedWhite: 0.55, alpha: 1.0).setStroke()

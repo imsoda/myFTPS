@@ -35,12 +35,12 @@ typedef NS_ENUM(NSInteger, OpenSSLVerifyResult) {
   OpenSSLVerifyResult_CONTINUE = 1,
 };
 
-typedef OpenSSLVerifyResult (^OpenSSLCertVerifyCallback)(OpenSSLPreverify preverify, OSStatus status, SecTrustResultType result, NSArray *certs);
+typedef OpenSSLVerifyResult (^OpenSSLCertVerifyCallback)(OpenSSLPreverify preverify, OSStatus status, SecTrustResultType result,  NSArray * _Nonnull certs);
 
 @interface OpenSSLHelper : NSObject
 + (void)globalInit;
 + (void)globalCleanup;
-@property (nonatomic, copy) NSString *hostName;
-- (void)registerCertVerifyCallback:(void *)sslCtx;
-@property (nonatomic, copy) OpenSSLCertVerifyCallback certVerifyCallback;
+@property (nonatomic, copy, nullable) NSString *hostName;
+- (void)registerCertVerifyCallback:(void * _Nonnull)sslCtx;
+@property (nonatomic, copy, nullable) OpenSSLCertVerifyCallback certVerifyCallback;
 @end

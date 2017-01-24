@@ -36,14 +36,14 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let nc = NSNotificationCenter.defaultCenter()
-    nc.addObserver(self, selector: "connect:", name: ConnectNotification, object: nil)
-    nc.addObserver(self, selector: "disconnect:", name: DisconnectNotification, object: nil)
+    let nc = NotificationCenter.default
+    nc.addObserver(self, selector: #selector(ServerListViewController.connect(_:)), name: NSNotification.Name(rawValue: ConnectNotification), object: nil)
+    nc.addObserver(self, selector: #selector(ServerListViewController.disconnect(_:)), name: NSNotification.Name(rawValue: DisconnectNotification), object: nil)
 
-    serverListOutlineView.setDataSource(self)
-    serverListOutlineView.setDelegate(self)
+    serverListOutlineView.dataSource = self
+    serverListOutlineView.delegate = self
     serverListOutlineView.target = self
-    serverListOutlineView.doubleAction = "serverListViewDoubleClicked:"
+    serverListOutlineView.doubleAction = #selector(ServerListViewController.serverListViewDoubleClicked(_:))
     
     // context menu
     let contextMenu = NSMenu()
@@ -52,29 +52,29 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
     let renameMenuItem = NSMenuItem()
     renameMenuItem.title = "Rename"
     renameMenuItem.target = self
-    renameMenuItem.action = "rename"
-    renameMenuItem.enabled = true
+    renameMenuItem.action = #selector(ServerListViewController.rename)
+    renameMenuItem.isEnabled = true
     contextMenu.addItem(renameMenuItem)
     
     let deleteMenuItem = NSMenuItem()
     deleteMenuItem.title = "Delete"
     deleteMenuItem.target = self
-    deleteMenuItem.action = "delete"
-    deleteMenuItem.enabled = true
+    deleteMenuItem.action = #selector(ServerListViewController.delete)
+    deleteMenuItem.isEnabled = true
     contextMenu.addItem(deleteMenuItem)
     
     serverListOutlineView.menu = contextMenu
   }
   
   deinit {
-    let nc = NSNotificationCenter.defaultCenter()
+    let nc = NotificationCenter.default
     nc.removeObserver(self)
   }
   
   // MARK: - Notifications
   
-  func connect(notification: NSNotification) {
-    let connectViewController = self.storyboard!.instantiateControllerWithIdentifier("connectViewController") as! ConnectViewController
+  func connect(_ notification: Notification) {
+    let connectViewController = self.storyboard!.instantiateController(withIdentifier: "connectViewController") as! ConnectViewController
     connectViewController.delegate = self
     if let userInfo = notification.userInfo {
       connectViewController.hostName = userInfo["hostName"] != nil ? userInfo["hostName"] as! String : ""
@@ -91,24 +91,24 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
     presentViewControllerAsSheet(connectViewController)
   }
   
-  func disconnect(notification: NSNotification) {
+  func disconnect(_ notification: Notification) {
     let manager = FTPSManager.sharedInstance;
     manager.activeSession?.disconnect()
     manager.activeSession = nil
-    let nc = NSNotificationCenter.defaultCenter()
-    nc.postNotificationName(DidDisconnectNotification, object: self)
+    let nc = NotificationCenter.default
+    nc.post(name: Notification.Name(rawValue: DidDisconnectNotification), object: self)
   }
   
   // MARK: - NSSeguePerforming
   
-  override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+  override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
     if identifier == "newConnect" {
       return FTPSManager.sharedInstance.activeSession == nil
     }
     return true
   }
   
-  override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
+  override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
     if segue.identifier == "newConnect" {
       let connectViewController = segue.destinationController as! ConnectViewController
       connectViewController.delegate = self
@@ -117,7 +117,7 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
 
   // MARK: - ConnectViewControllerDelegate
   
-  func connectViewController(connectViewController: ConnectViewController, didFinishWithResult result: ConnectViewControllerResult?) {
+  func connectViewController(_ connectViewController: ConnectViewController, didFinishWithResult result: ConnectViewControllerResult?) {
     if result == nil {
       return
     }
@@ -125,13 +125,13 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
     if manager.activeSession != nil {
       return
     }
-    let nc = NSNotificationCenter.defaultCenter()
-    nc.postNotification(NSNotification(name: TaskStartNotification, object: nil))
+    let nc = NotificationCenter.default
+    nc.post(Notification(name: Notification.Name(rawValue: TaskStartNotification), object: nil))
     manager.activeSession = manager.createSession(result!.hostName, userName: result!.userName, password: result!.password)
     if manager.activeSession == nil {
       let alert = NSAlert()
       alert.messageText = "Failed to connect the server"
-      alert.alertStyle = NSAlertStyle.CriticalAlertStyle
+      alert.alertStyle = NSAlertStyle.critical
       alert.runModal()
       return
     }
@@ -139,44 +139,44 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
     manager.activeSession!.changeDirectory(result!.path)
     addServerListItem(result!.hostName, userName: result!.userName, path: result!.path)
     
-    nc.postNotificationName(DidConnectNotification, object: self)
+    nc.post(name: Notification.Name(rawValue: DidConnectNotification), object: self)
   }
 
-  func sslVerificationCallback(ftpsClient: FTPSClient, preverify: OpenSSLPreverify, status: OSStatus, result: SecTrustResultType, certs: [SecCertificateRef]) {
-    if result == SecTrustResultType(kSecTrustResultProceed) || result == SecTrustResultType(kSecTrustResultUnspecified) {
+  func sslVerificationCallback(_ ftpsClient: FTPSClient, preverify: OpenSSLPreverify, status: OSStatus, result: SecTrustResultType, certs: [SecCertificate]) {
+    if result == SecTrustResultType.proceed || result == SecTrustResultType.unspecified {
       let manager = FTPSManager.sharedInstance;
       manager.activeSession!.setSSLVeirificationResult(OpenSSLVerifyResult.CONTINUE)
       return
     }
     
-    var array = NSMutableArray()
+    var array = [SecCertificate]()
     for cert in certs {
-      array.addObject(cert)
+      array.append(cert)
     }
     
-    let certificateViewController = self.storyboard!.instantiateControllerWithIdentifier("certificateViewController") as! CertificateViewController
+    let certificateViewController = self.storyboard!.instantiateController(withIdentifier: "certificateViewController") as! CertificateViewController
     certificateViewController.certs = certs
     certificateViewController.delegate = self
     self.presentViewControllerAsSheet(certificateViewController)
   }
   
-  func certificateViewController(certificateViewController: CertificateViewController, didFinishWithResult result: OpenSSLVerifyResult) {
+  func certificateViewController(_ certificateViewController: CertificateViewController, didFinishWithResult result: OpenSSLVerifyResult) {
     let manager = FTPSManager.sharedInstance;
     manager.activeSession!.setSSLVeirificationResult(result)
     
-    let nc = NSNotificationCenter.defaultCenter()
-    nc.postNotificationName(DidConnectNotification, object: self)
+    let nc = NotificationCenter.default
+    nc.post(name: Notification.Name(rawValue: DidConnectNotification), object: self)
   }
   
-  func addServerListItem(hostName: String, userName: String, path: String) {
-    var index = self.serverList.indexOfItem(hostName: hostName, userName: userName, path: path)
+  func addServerListItem(_ hostName: String, userName: String, path: String) {
+    var index = self.serverList.indexOfItem(hostName, userName, path: path)
     if index >= 0 {
       // same item already exists
-      self.serverListOutlineView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: false)
+      self.serverListOutlineView.selectRowIndexes(IndexSet(integer: index), byExtendingSelection: false)
       return
     }
     
-    index = self.serverList.indexOfItem(itemName: hostName)
+    index = self.serverList.indexOf(itemName: hostName)
     if index < 0 {
       let item = ServerListItem()
       item.itemName = hostName
@@ -185,16 +185,16 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
       item.path = path
       index = self.serverList.add(item)
       self.serverListOutlineView.reloadData()
-      self.serverListOutlineView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: false)
+      self.serverListOutlineView.selectRowIndexes(IndexSet(integer: index), byExtendingSelection: false)
       return
     }
     
     var counter = 1
     var itemName = ""
-    do {
+    repeat {
       itemName = "\(hostName) (\(counter))"
-      index = self.serverList.indexOfItem(itemName: itemName)
-      ++counter
+      index = self.serverList.indexOf(itemName: itemName)
+      counter += 1
     }
     while index >= 0
     
@@ -205,7 +205,7 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
     item.path = path
     index = self.serverList.add(item)
     self.serverListOutlineView.reloadData()
-    self.serverListOutlineView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: false)
+    self.serverListOutlineView.selectRowIndexes(IndexSet(integer: index), byExtendingSelection: false)
   }
 
   func rename() {
@@ -213,22 +213,22 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
     if index < 0 {
       return
     }
-    var cellView = self.serverListOutlineView.viewAtColumn(0, row: index, makeIfNecessary: true) as! NSTableCellView
-    cellView.textField!.editable = true
+    let cellView = self.serverListOutlineView.view(atColumn: 0, row: index, makeIfNecessary: true) as! NSTableCellView
+    cellView.textField!.isEditable = true
     cellView.textField!.delegate = self
     cellView.textField!.becomeFirstResponder()
     cellView.textField!.tag = index
   }
 
-  override func controlTextDidEndEditing(aNotification: NSNotification) {
+  override func controlTextDidEndEditing(_ aNotification: Notification) {
     let textField = aNotification.object as! NSTextField
     let index = textField.tag
     let item = serverList[index]
     let newItemName = textField.stringValue
-    textField.editable = false
+    textField.isEditable = false
     textField.delegate = nil
     
-    if self.serverList.indexOfItem(itemName: newItemName) >= 0 {
+    if self.serverList.indexOf(itemName: newItemName) >= 0 {
       // duplicated name
       textField.stringValue = item.itemName
       return
@@ -254,35 +254,35 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
   
   // MARK: - NSOutlineViewDataSource
   
-  func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
+  func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
     if item == nil {
       return serverList.count
     }
     return 0
   }
   
-  func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
+  func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
     if item == nil {
       return serverList[index]
     }
     return ""
   }
   
-  func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
+  func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
     return false
   }
   
   // MARK: - NSOutlineViewDelegate
   
-  func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
-    var cell = outlineView.makeViewWithIdentifier("serverCell", owner: self) as! NSTableCellView
+  func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
+    let cell = outlineView.make(withIdentifier: "serverCell", owner: self) as! NSTableCellView
     let serverListItem = item as! ServerListItem
-    let index = serverList.indexOfItem(itemName: serverListItem.itemName)
+    let index = serverList.indexOf(itemName: serverListItem.itemName)
     cell.textField!.stringValue = serverList[index].itemName
     return cell
   }
   
-  func serverListViewDoubleClicked(sender: AnyObject) {
+  func serverListViewDoubleClicked(_ sender: AnyObject) {
     let index = self.serverListOutlineView.selectedRow
     if index < 0 {
       return
@@ -291,7 +291,7 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
       return
     }
     let item = self.serverList[index]
-    let nc = NSNotificationCenter.defaultCenter()
-    nc.postNotificationName(ConnectNotification, object: self, userInfo: ["hostName": item.hostName, "userName": item.userName, "path": item.path])
+    let nc = NotificationCenter.default
+    nc.post(name: Notification.Name(rawValue: ConnectNotification), object: self, userInfo: ["hostName": item.hostName, "userName": item.userName, "path": item.path])
   }
 }

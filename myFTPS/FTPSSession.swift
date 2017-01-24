@@ -25,27 +25,27 @@ THE SOFTWARE.
 import Foundation
 
 protocol FTPSSessionDelegate: class {
-  func session(session: FTPSSession, didChangeDirectory path: String, fileList: [FileListItem])
+  func session(_ session: FTPSSession, didChangeDirectory path: String, fileList: [FileListItem])
   
-  func session(session: FTPSSession, uploadProgressForFile filePath: String, totalBytes: Int, now: Int) -> CurlProgress
-  func session(session: FTPSSession, didUploadFile filePath: String, totalFiles: Int, now: Int)
-  func session(session: FTPSSession, didUploadAllFiles filePaths: [String])
+  func session(_ session: FTPSSession, uploadProgressForFile filePath: String, totalBytes: Int, now: Int) -> CurlProgress
+  func session(_ session: FTPSSession, didUploadFile filePath: String, totalFiles: Int, now: Int)
+  func session(_ session: FTPSSession, didUploadAllFiles filePaths: [String])
   
-  func session(session: FTPSSession, downloadProgressForFile filePath: String, totalBytes: Int, now: Int) -> CurlProgress
-  func session(session: FTPSSession, didDownloadFile filePath: String, totalFiles: Int, now: Int)
-  func session(session: FTPSSession, didDownloadAllFiles filePaths: [String])
+  func session(_ session: FTPSSession, downloadProgressForFile filePath: String, totalBytes: Int, now: Int) -> CurlProgress
+  func session(_ session: FTPSSession, didDownloadFile filePath: String, totalFiles: Int, now: Int)
+  func session(_ session: FTPSSession, didDownloadAllFiles filePaths: [String])
   
-  func session(session: FTPSSession, didFailWithCurlCode curlCode: CurlCode)
-  func session(session: FTPSSession, didFailWithError error: FTPSSession.Error)
+  func session(_ session: FTPSSession, didFailWithCurlCode curlCode: CurlCode)
+  func session(_ session: FTPSSession, didFailWithError error: FTPSSession.Error)
 }
 
 class FTPSSession {
-  enum Error : Int, Printable {
-    case NoDownloadFolder = 0
+  enum Error : Int, CustomStringConvertible {
+    case noDownloadFolder = 0
     var description: String {
       get {
         switch self {
-        case .NoDownloadFolder: return "No download folder"
+        case .noDownloadFolder: return "No download folder"
         }
       }
     }
@@ -54,7 +54,7 @@ class FTPSSession {
   unowned let manager: FTPSManager
   let identifier: Int
   var client: FTPSClient
-  var queue: dispatch_queue_t
+  var queue: DispatchQueue
   var delegates = [FTPSSessionDelegate]()
   var sslVerificationCallback: SSLVerificationCallback? {
     get {
@@ -69,10 +69,10 @@ class FTPSSession {
     self.manager = manager
     self.identifier = identifier
     self.client = FTPSClient(hostName: hostName, userName: userName, password: password)
-    self.queue = dispatch_queue_create("worker", DISPATCH_QUEUE_SERIAL)
+    self.queue = DispatchQueue(label: "worker", attributes: [])
   }
   
-  func indexOfDelegate(delegate: FTPSSessionDelegate) -> Int {
+  func indexOfDelegate(_ delegate: FTPSSessionDelegate) -> Int {
     var index: Int = -1
     for i in 0 ..< self.delegates.count {
       if self.delegates[i] === delegate {
@@ -83,17 +83,17 @@ class FTPSSession {
     return index
   }
   
-  func addDelegate(delegate: FTPSSessionDelegate) {
+  func addDelegate(_ delegate: FTPSSessionDelegate) {
     let index = indexOfDelegate(delegate)
     if index < 0 {
       self.delegates.append(delegate)
     }
   }
   
-  func removeDelegate(delegate: FTPSSessionDelegate) {
+  func removeDelegate(_ delegate: FTPSSessionDelegate) {
     let index = indexOfDelegate(delegate)
     if index >= 0 {
-      self.delegates.removeAtIndex(index)
+      self.delegates.remove(at: index)
     }
   }
   
@@ -113,16 +113,16 @@ class FTPSSession {
     return client.password
   }
   
-  func setSSLVeirificationResult(result: OpenSSLVerifyResult) {
-    dispatch_semaphore_wait(self.client.semaphore, DISPATCH_TIME_FOREVER)
+  func setSSLVeirificationResult(_ result: OpenSSLVerifyResult) {
+    _ = self.client.semaphore.wait(timeout: DispatchTime.distantFuture)
     self.client.verifyResult = result
-    dispatch_semaphore_signal(self.client.semaphore)
+    self.client.semaphore.signal()
   }
   
-  func changeDirectory(newPath: String) {
-    dispatch_async(self.queue, { () -> Void in
+  func changeDirectory(_ newPath: String) {
+    self.queue.async(execute: { () -> Void in
       let (code, fileList) = self.client.changeDirectory(newPath)
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      DispatchQueue.main.async(execute: { () -> Void in
         if code == CurlCode.OK {
           for delegate in self.delegates {
             delegate.session(self, didChangeDirectory: newPath, fileList: fileList!)
@@ -139,28 +139,28 @@ class FTPSSession {
   
   func disconnect() {
     self.client.disconnect()
-    self.manager.sessions.removeAtIndex(self.identifier)
-    self.delegates.removeAll(keepCapacity: false)
+    self.manager.sessions.remove(at: self.identifier)
+    self.delegates.removeAll(keepingCapacity: false)
   }
   
-  func upload(filePaths: [String]) {
-    dispatch_async(self.queue, { () -> Void in
+  func upload(_ filePaths: [String]) {
+    self.queue.async(execute: { () -> Void in
       var hasError = false
       for i in 0 ..< filePaths.count {
         let filePath = filePaths[i]
-        let curlCode = self.client.upload(filePath, progressCallback: { (downloadTotal, downloadNow, uploadTotal, uploadNow) -> CurlProgress in
-          var progress = CurlProgress.Continue
-          dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+        let curlCode = self.client.upload(localPath: filePath, progressCallback: { (downloadTotal, downloadNow, uploadTotal, uploadNow) -> CurlProgress in
+          var progress = CurlProgress.continue
+          DispatchQueue.main.sync(execute: { () -> Void in
             for delegate in self.delegates {
               let prog = delegate.session(self, uploadProgressForFile: filePath, totalBytes: uploadTotal, now: uploadNow)
-              if prog == CurlProgress.Abort {
-                progress = CurlProgress.Abort
+              if prog == CurlProgress.abort {
+                progress = CurlProgress.abort
               }
             }
           })
           return progress
         })
-        dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.sync(execute: { () -> Void in
           if curlCode == CurlCode.OK {
             for delegate in self.delegates {
               delegate.session(self, didUploadFile: filePath, totalFiles: filePaths.count, now: i)
@@ -178,14 +178,14 @@ class FTPSSession {
         }
       }
       
-      dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+      DispatchQueue.main.sync(execute: { () -> Void in
         for delegate in self.delegates {
           delegate.session(self, didUploadAllFiles: filePaths)
         }
       })
       
       let (listCode, list) = self.client.changeDirectory(self.client.currentPath)
-      dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+      DispatchQueue.main.sync(execute: { () -> Void in
         if listCode == CurlCode.OK {
           for delegate in self.delegates {
             delegate.session(self, didChangeDirectory: self.client.currentPath, fileList: list!)
@@ -201,25 +201,25 @@ class FTPSSession {
     }) // self.queue
   }
   
-  func download(filePaths: [String], downloadFolderPath: String) {
-    dispatch_async(self.queue, { () -> Void in
+  func download(_ filePaths: [String], downloadFolderPath: String) {
+    self.queue.async(execute: { () -> Void in
       var hasError = false
       for i in 0 ..< filePaths.count {
         let filePath = filePaths[i]
-        let localPath = downloadFolderPath.stringByAppendingPathComponent(filePath)
+        let localPath = (downloadFolderPath as NSString).appendingPathComponent(filePath)
         let curlCode = self.client.download(filePath, localPath: localPath, progressCallback: { (downloadTotal, downloadNow, uploadTotal, uploadNow) -> CurlProgress in
-          var progress = CurlProgress.Continue
-          dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+          var progress = CurlProgress.continue
+          DispatchQueue.main.sync(execute: { () -> Void in
             for delegate in self.delegates {
               let prog = delegate.session(self, downloadProgressForFile: filePath, totalBytes: downloadTotal, now: downloadNow)
-              if prog == CurlProgress.Abort {
-                progress = CurlProgress.Abort
+              if prog == CurlProgress.abort {
+                progress = CurlProgress.abort
               }
             }
           })
           return progress
         })
-        dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.sync(execute: { () -> Void in
           if curlCode == CurlCode.OK {
             for delegate in self.delegates {
               delegate.session(self, didDownloadFile: filePath, totalFiles: filePaths.count, now: i)
@@ -238,7 +238,7 @@ class FTPSSession {
       }
       
       if hasError == false {
-        dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.sync(execute: { () -> Void in
           for delegate in self.delegates {
             delegate.session(self, didDownloadAllFiles: filePaths)
           }
@@ -247,11 +247,11 @@ class FTPSSession {
     })
   }
   
-  func makeDirectory(directoryName: String) {
-    dispatch_async(self.queue, { () -> Void in
+  func makeDirectory(_ directoryName: String) {
+    self.queue.async(execute: { () -> Void in
       let mkdirCode = self.client.makeDirectory(directoryName)
       let (listCode, list) = self.client.changeDirectory(self.client.currentPath)
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      DispatchQueue.main.async(execute: { () -> Void in
         if mkdirCode == CurlCode.OK  && listCode == CurlCode.OK {
           for delegate in self.delegates {
             delegate.session(self, didChangeDirectory: self.client.currentPath, fileList: list!)
@@ -273,11 +273,11 @@ class FTPSSession {
     })
   }
   
-  func removeDirectory(directoryName: String) {
-    dispatch_async(self.queue, { () -> Void in
+  func removeDirectory(_ directoryName: String) {
+    self.queue.async(execute: { () -> Void in
       let rmdirCode = self.client.removeDirectory(directoryName)
       let (listCode, list) = self.client.changeDirectory(self.client.currentPath)
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      DispatchQueue.main.async(execute: { () -> Void in
         if rmdirCode == CurlCode.OK  && listCode == CurlCode.OK {
           for delegate in self.delegates {
             delegate.session(self, didChangeDirectory: self.client.currentPath, fileList: list!)
@@ -299,11 +299,11 @@ class FTPSSession {
     })
   }
   
-  func renameFile(oldFileName: String, newFileName: String) {
-    dispatch_async(self.queue, { () -> Void in
+  func renameFile(_ oldFileName: String, newFileName: String) {
+    self.queue.async(execute: { () -> Void in
       let renameCode = self.client.renameFile(oldFileName, newName: newFileName)
       let (listCode, list) = self.client.changeDirectory(self.client.currentPath)
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      DispatchQueue.main.async(execute: { () -> Void in
         if renameCode == CurlCode.OK  && listCode == CurlCode.OK {
           for delegate in self.delegates {
             delegate.session(self, didChangeDirectory: self.client.currentPath, fileList: list!)
@@ -325,12 +325,12 @@ class FTPSSession {
     })
   }
   
-  func changePermissions(fileName: String, permissions: UInt) {
-    dispatch_async(self.queue, { () -> Void in
+  func changePermissions(_ fileName: String, permissions: UInt) {
+    self.queue.async(execute: { () -> Void in
       let chmodCode = self.client.changePermissions(fileName, permission: permissions)
       let (listCode, list) = self.client.changeDirectory(self.client.currentPath)
       
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      DispatchQueue.main.async(execute: { () -> Void in
         if chmodCode == CurlCode.OK  && listCode == CurlCode.OK {
           for delegate in self.delegates {
             delegate.session(self, didChangeDirectory: self.client.currentPath, fileList: list!)
@@ -352,12 +352,12 @@ class FTPSSession {
     })
   }
   
-  func deleteFile(fileName: String) {
-    dispatch_async(self.queue, { () -> Void in
+  func deleteFile(_ fileName: String) {
+    self.queue.async(execute: { () -> Void in
       let rmCode = self.client.removeFile(fileName)
       let (listCode, list) = self.client.changeDirectory(self.client.currentPath)
       
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      DispatchQueue.main.async(execute: { () -> Void in
         if rmCode == CurlCode.OK  && listCode == CurlCode.OK {
           for delegate in self.delegates {
             delegate.session(self, didChangeDirectory: self.client.currentPath, fileList: list!)

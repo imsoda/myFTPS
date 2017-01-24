@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 import Foundation
 
-struct FileListItem : Printable, Equatable {
+struct FileListItem : CustomStringConvertible, Equatable {
   var fileName = ""
   var directory = ""
   var userPermissions = ""

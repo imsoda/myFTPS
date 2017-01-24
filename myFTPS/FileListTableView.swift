@@ -23,9 +23,33 @@ THE SOFTWARE.
 */
 
 import Cocoa
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 protocol FileListTableViewDragDelegate {
-  func fileListTableView(fileListTableView: FileListTableView, didDragFiles files: [String])
+  func fileListTableView(_ fileListTableView: FileListTableView, didDragFiles files: [String])
 }
 
 class FileListTableView: NSTableView {
@@ -39,19 +63,19 @@ class FileListTableView: NSTableView {
     super.init(coder: coder)
   }
   
-  override func draggingEntered(sender: NSDraggingInfo) -> NSDragOperation {
-    return NSDragOperation.Copy
+  override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
+    return NSDragOperation.copy
   }
   
-  override func draggingUpdated(sender: NSDraggingInfo) -> NSDragOperation {
-    return NSDragOperation.Copy
+  override func draggingUpdated(_ sender: NSDraggingInfo) -> NSDragOperation {
+    return NSDragOperation.copy
   }
   
-  override func performDragOperation(sender: NSDraggingInfo) -> Bool {
+  override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
     let pboard = sender.draggingPasteboard()
-    let types = pboard.types?.filter {($0 as! NSString) == NSFilenamesPboardType}
+    let types = pboard.types?.filter {($0 as NSString) as String == NSFilenamesPboardType}
     if types?.count > 0 {
-      if let files = pboard.propertyListForType(NSFilenamesPboardType) as? [String] {
+      if let files = pboard.propertyList(forType: NSFilenamesPboardType) as? [String] {
         dragDelegate?.fileListTableView(self, didDragFiles: files)
         return true
       }

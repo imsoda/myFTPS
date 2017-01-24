@@ -25,9 +25,9 @@ THE SOFTWARE.
 import Foundation
 
 public typealias SSLVerificationCallback =
-  (ftpsClient: FTPSClient, preverify: OpenSSLPreverify, status: OSStatus, result: SecTrustResultType, certs: [SecCertificateRef]) -> Void
+  (_ ftpsClient: FTPSClient, _ preverify: OpenSSLPreverify, _ status: OSStatus, _ result: SecTrustResultType, _ certs: [SecCertificate]) -> Void
 
-public class FTPSClient {
+open class FTPSClient {
   let curl = Curl()
   let openSSLHelper = OpenSSLHelper()
   let listParser = FileListParser()
@@ -35,7 +35,7 @@ public class FTPSClient {
   let userName: String
   let password: String
   var currentPath = "/"
-  let semaphore = dispatch_semaphore_create(1)
+  let semaphore = DispatchSemaphore(value: 1)
   var verifyResult: OpenSSLVerifyResult? = nil
   var sslVerificationCallback: SSLVerificationCallback? = nil
   
@@ -51,30 +51,30 @@ public class FTPSClient {
     self.curl.cleanup()
   }
   
-  func certVerify(preverify: OpenSSLPreverify, status: OSStatus, result: SecTrustResultType, certs _certs: NSArray) -> OpenSSLVerifyResult {
-    var certs = [SecCertificateRef]()
+  func certVerify(_ preverify: OpenSSLPreverify, status: OSStatus, result: SecTrustResultType, certs _certs: NSArray) -> OpenSSLVerifyResult {
+    var certs = [SecCertificate]()
     for _cert in _certs {
-      let cert = _cert as! SecCertificateRef
+      let cert = _cert as! SecCertificate
       certs.append(cert)
     }
     var sslResult = OpenSSLVerifyResult.STOP
     if self.sslVerificationCallback != nil {
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
-        self.sslVerificationCallback!(ftpsClient: self, preverify: preverify, status: status, result: result, certs: certs)
+      DispatchQueue.main.async(execute: { () -> Void in
+        self.sslVerificationCallback!(self, preverify, status, result, certs)
       })
       let waitTime: Int64 = 250 * Int64(NSEC_PER_MSEC)
       while true {
-        let time = dispatch_time(DISPATCH_TIME_NOW, waitTime)
-        let ret = dispatch_semaphore_wait(self.semaphore, time)
-        if ret == 0 {
+        let time = DispatchTime.now() + Double(waitTime) / Double(NSEC_PER_SEC)
+        let ret = self.semaphore.wait(timeout: time)
+        if ret == .success {
           if self.verifyResult != nil {
             sslResult = self.verifyResult!
-            dispatch_semaphore_signal(self.semaphore)
+            self.semaphore.signal()
             break
           }
           else {
-            dispatch_semaphore_signal(self.semaphore)
-            NSThread.sleepForTimeInterval(0.25)
+            self.semaphore.signal()
+            Thread.sleep(forTimeInterval: 0.25)
             continue
           }
         }
@@ -86,32 +86,33 @@ public class FTPSClient {
   func setAuthParams() {
     self.curl.username = self.userName
     self.curl.password = self.password
-    self.curl.useSSL = CurlUseSSL.All
-    self.curl.SSLVerifyHost = false
-    self.curl.SSLVerifyPeer = false
-    self.curl.SSLCtxFunction = {(curl, sslCtx) -> CurlCode in
+    self.curl.useSSL = CurlUseSSL.all
+    self.curl.sslVerifyHost = false
+    self.curl.sslVerifyPeer = false
+    self.curl.sslCtxFunction = {(curl, sslCtx) -> CurlCode in
       self.openSSLHelper.registerCertVerifyCallback(sslCtx);
-      self.openSSLHelper.certVerifyCallback = {(preverify, status, result, certs) in
-        self.certVerify(preverify, status: status, result: result, certs: certs)
+      //typedef OpenSSLVerifyResult (^OpenSSLCertVerifyCallback)(OpenSSLPreverify preverify, OSStatus status, SecTrustResultType result, NSArray *certs);
+      self.openSSLHelper.certVerifyCallback = {(preverify: OpenSSLPreverify, status: OSStatus, result: SecTrustResultType, certs: [Any]) in
+        self.certVerify(preverify, status: status, result: result, certs: certs as NSArray)
       }
       return CurlCode.OK
     }
   }
   
-  public typealias ProgressCallback = (downloadTotal: Int, downloadNow: Int,
-    uploadTotal: Int, uploadNow: Int) -> CurlProgress
+  public typealias ProgressCallback = (_ downloadTotal: Int, _ downloadNow: Int,
+    _ uploadTotal: Int, _ uploadNow: Int) -> CurlProgress
   
-  public func download(remoteFileName: String, localPath: String, progressCallback: ProgressCallback) -> CurlCode {
+  open func download(_ remoteFileName: String, localPath: String, progressCallback: @escaping ProgressCallback) -> CurlCode {
     let coordinator = NSFileCoordinator()
-    let localURL = NSURL(fileURLWithPath: localPath)
+    let localURL = URL(fileURLWithPath: localPath)
     var coordinatorError: NSError?
-    var code: CurlCode = CurlCode.ReadError
-    coordinator.coordinateWritingItemAtURL(localURL!,
-      options: NSFileCoordinatorWritingOptions(0),
+    var code: CurlCode = CurlCode.readError
+    coordinator.coordinate(writingItemAt: localURL,
+      options: [],
       error: &coordinatorError) { (localURL) -> Void in
         
-        let localPath = localURL.path!
-        let outputStream = NSOutputStream(toFileAtPath: localPath, append: false)
+        let localPath = localURL.path
+        let outputStream = OutputStream(toFileAtPath: localPath, append: false)
         if outputStream == nil {
           fatalError("failed to create output stream")
         }
@@ -119,7 +120,7 @@ public class FTPSClient {
         self.curl.reset()
         var url = "ftp://\(self.hostName)\(self.currentPath)"
         url = url.hasSuffix("/") ? "\(url)\(remoteFileName)" : "\(url)/\(remoteFileName)"
-        self.curl.URL = url
+        self.curl.url = url
         self.setAuthParams()
         self.curl.writeFunction = {(buffer, size) in
           let n = outputStream!.write(buffer, maxLength: size)
@@ -136,25 +137,23 @@ public class FTPSClient {
     return code
   }
   
-  func upload(localPath: String, progressCallback: ProgressCallback) -> CurlCode {
-    let fileName = localPath.lastPathComponent
+  func upload(localPath: String, progressCallback: @escaping ProgressCallback) -> CurlCode {
+    let fileName = (localPath as NSString).lastPathComponent
     let coordinator = NSFileCoordinator()
-    let localURL = NSURL(fileURLWithPath: localPath)
+    let localURL = URL(fileURLWithPath: localPath)
     var coordinatorError: NSError?
-    var code: CurlCode = CurlCode.UploadFailed
-    coordinator.coordinateReadingItemAtURL(localURL!,
-      options: NSFileCoordinatorReadingOptions(0),
+    var code: CurlCode = CurlCode.uploadFailed
+    coordinator.coordinate(readingItemAt: localURL,
+      options: [],
       error: &coordinatorError) { (localURL) -> Void in
         
-        let localPath = localURL.path!
-        let fileManager = NSFileManager.defaultManager()
-        var error: NSError?
-        let attributes = fileManager.attributesOfItemAtPath(localPath, error: &error)
-        if error != nil || attributes == nil {
+        let localPath = localURL.path
+        let fileManager = FileManager.default
+        guard let attributes = try? fileManager.attributesOfItem(atPath: localPath) else {
           fatalError("failed to get file attribute")
         }
-        let fileSize = attributes![NSFileSize] as! NSNumber
-        let inputStream = NSInputStream(fileAtPath: localPath)
+        let fileSize = attributes[FileAttributeKey.size] as! NSNumber
+        let inputStream = InputStream(fileAtPath: localPath)
         if inputStream == nil {
           fatalError("failed to create input stream")
         }
@@ -163,10 +162,10 @@ public class FTPSClient {
         self.curl.reset()
         var url = "ftp://\(self.hostName)\(self.currentPath)"
         url = url.hasSuffix("/") ? "\(url)\(fileName)" : "\(url)/\(fileName)"
-        self.curl.URL = url
+        self.curl.url = url
         self.setAuthParams()
         self.curl.upload = true
-        self.curl.inFileSize = fileSize.integerValue
+        self.curl.inFileSize = fileSize.intValue
         self.curl.readFunction = {(buffer, size) in
           return inputStream!.read(buffer, maxLength: size)
         }
@@ -181,14 +180,14 @@ public class FTPSClient {
     return code
   }
   
-  func changeDirectory(remotePath: String) -> (CurlCode, [FileListItem]?) {
-    let outputStream = NSOutputStream.outputStreamToMemory()
+  func changeDirectory(_ remotePath: String) -> (CurlCode, [FileListItem]?) {
+    let outputStream = OutputStream.toMemory()
     outputStream.open()
     assert(remotePath.hasPrefix("/"))
     assert(remotePath.hasSuffix("/"))
     self.curl.reset()
     let url = "ftp://\(self.hostName)\(remotePath)"
-    self.curl.URL = url
+    self.curl.url = url
     self.setAuthParams()
     self.curl.writeFunction = {(buffer, size) in
       return outputStream.write(buffer, maxLength: size)
@@ -196,16 +195,16 @@ public class FTPSClient {
     let code = self.curl.perform()
     if code == CurlCode.OK {
       self.currentPath = remotePath;
-      let data = outputStream.propertyForKey(NSStreamDataWrittenToMemoryStreamKey) as! NSData
+      let data = outputStream.property(forKey: Stream.PropertyKey.dataWrittenToMemoryStreamKey) as! Data
       let listItems = self.listParser.parse(data)
       return (code, listItems)
     }
     return (code, nil)
   }
   
-  func makeDirectory(directoryName: String) -> CurlCode {
+  func makeDirectory(_ directoryName: String) -> CurlCode {
     self.curl.reset()
-    self.curl.URL = "ftp://\(self.hostName)\(self.currentPath)"
+    self.curl.url = "ftp://\(self.hostName)\(self.currentPath)"
     self.setAuthParams()
     self.curl.noBody = true
     self.curl.postQuote = ["MKD \(directoryName)"]
@@ -213,9 +212,9 @@ public class FTPSClient {
     return code
   }
   
-  func removeDirectory(directoryName: String) -> CurlCode {
+  func removeDirectory(_ directoryName: String) -> CurlCode {
     self.curl.reset()
-    self.curl.URL = "ftp://\(self.hostName)\(self.currentPath)"
+    self.curl.url = "ftp://\(self.hostName)\(self.currentPath)"
     self.setAuthParams()
     self.curl.noBody = true
     self.curl.postQuote = ["RMD \(directoryName)"]
@@ -223,9 +222,9 @@ public class FTPSClient {
     return code
   }
   
-  func renameFile(oldName: String, newName: String) -> CurlCode {
+  func renameFile(_ oldName: String, newName: String) -> CurlCode {
     self.curl.reset()
-    self.curl.URL = "ftp://\(self.hostName)\(self.currentPath)"
+    self.curl.url = "ftp://\(self.hostName)\(self.currentPath)"
     self.setAuthParams()
     self.curl.noBody = true
     self.curl.postQuote = [
@@ -236,9 +235,9 @@ public class FTPSClient {
     return code
   }
   
-  func removeFile(fileName: String) -> CurlCode {
+  func removeFile(_ fileName: String) -> CurlCode {
     self.curl.reset()
-    self.curl.URL = "ftp://\(self.hostName)\(self.currentPath)"
+    self.curl.url = "ftp://\(self.hostName)\(self.currentPath)"
     self.setAuthParams()
     self.curl.noBody = true
     self.curl.postQuote = ["DELE \(fileName)"]
@@ -246,10 +245,10 @@ public class FTPSClient {
     return code
   }
   
-  func changePermissions(fileName: String, permission: UInt) -> CurlCode {
+  func changePermissions(_ fileName: String, permission: UInt) -> CurlCode {
     let hex = NSString(format: "%3x", permission)
     self.curl.reset()
-    self.curl.URL = "ftp://\(self.hostName)\(self.currentPath)"
+    self.curl.url = "ftp://\(self.hostName)\(self.currentPath)"
     self.setAuthParams()
     self.curl.noBody = true
     self.curl.postQuote = ["SITE CHMOD \(hex) \(fileName)"]

@@ -25,14 +25,14 @@ THE SOFTWARE.
 import Cocoa
 
 protocol CertificateViewControllerDelegate: class {
-  func certificateViewController(certificateViewController: CertificateViewController, didFinishWithResult: OpenSSLVerifyResult)
+  func certificateViewController(_ certificateViewController: CertificateViewController, didFinishWithResult: OpenSSLVerifyResult)
 }
 
 class CertificateViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
   @IBOutlet weak var tableView: NSTableView!
   @IBOutlet weak var scrollView: NSScrollView!
   var certificateView: CertificateView!
-  var certs: [SecCertificateRef]? {
+  var certs: [SecCertificate]? {
     didSet {
       uiUpdateRequired = true
     }
@@ -42,8 +42,8 @@ class CertificateViewController: NSViewController, NSTableViewDataSource, NSTabl
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    tableView.setDataSource(self)
-    tableView.setDelegate(self)
+    tableView.dataSource = self
+    tableView.delegate = self
     certificateView = CertificateView(frame: scrollView.bounds)
     scrollView.documentView = certificateView
   }
@@ -52,7 +52,7 @@ class CertificateViewController: NSViewController, NSTableViewDataSource, NSTabl
     super.viewWillAppear()
     if uiUpdateRequired {
       if certs != nil && certs!.count > 0 {
-        tableView.selectColumnIndexes(NSIndexSet(index: 0), byExtendingSelection: false)
+        tableView.selectColumnIndexes(IndexSet(integer: 0), byExtendingSelection: false)
         certificateView.setCertificate(certs!.first!)
         certificateView.setDetailsDisclosed(true)
       }
@@ -60,33 +60,34 @@ class CertificateViewController: NSViewController, NSTableViewDataSource, NSTabl
     }
   }
   
-  @IBAction func onOK(sender: AnyObject) {
+  @IBAction func onOK(_ sender: AnyObject) {
     delegate?.certificateViewController(self, didFinishWithResult: OpenSSLVerifyResult.CONTINUE)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
   
-  @IBAction func onCancel(sender: AnyObject) {
+  @IBAction func onCancel(_ sender: AnyObject) {
     delegate?.certificateViewController(self, didFinishWithResult: OpenSSLVerifyResult.STOP)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
   
-  func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+  func numberOfRows(in tableView: NSTableView) -> Int {
     return self.certs != nil ? self.certs!.count : 0
   }
   
-  func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+  func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
     if certs == nil {
       return nil
     }
     let cert = certs![row]
-    let desc = SecCertificateCopyShortDescription(kCFAllocatorDefault, cert, nil)
-    let _desc = Unmanaged<CFStringRef>.fromOpaque(desc.toOpaque()).takeUnretainedValue() as CFStringRef
-    var cell = tableView.makeViewWithIdentifier("certCell", owner: self) as! NSTableCellView
-    cell.textField?.stringValue = _desc as String
+    guard let desc = SecCertificateCopyShortDescription(kCFAllocatorDefault, cert, nil) as? String else {
+      fatalError()
+    }
+    let cell = tableView.make(withIdentifier: "certCell", owner: self) as! NSTableCellView
+    cell.textField?.stringValue = desc
     return cell
   }
   
-  func tableViewSelectionDidChange(notification: NSNotification) {
+  func tableViewSelectionDidChange(_ notification: Notification) {
     let index = tableView.selectedRow
     if index < 0 {
       return

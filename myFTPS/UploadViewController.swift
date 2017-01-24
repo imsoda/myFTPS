@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 import Cocoa
 
-func BytesToString(bytes: Int) -> String {
+func BytesToString(_ bytes: Int) -> String {
   if bytes < 1024 {
     return "\(bytes) bytes"
   }
@@ -54,12 +54,12 @@ func StringFromFileProgress(totalFiles: Int, now: Int) -> String {
 }
 
 protocol UploadViewControllerDelegate: class {
-  func uploadViewController(uploadViewController: UploadViewController, didFinishedWithResult: UploadViewControllerResult)
+  func uploadViewController(_ uploadViewController: UploadViewController, didFinishedWithResult: UploadViewControllerResult)
 }
 
 enum UploadViewControllerResult {
-  case OK
-  case Error
+  case ok
+  case error
 }
 
 class UploadViewController: NSViewController, FTPSSessionDelegate {
@@ -83,7 +83,7 @@ class UploadViewController: NSViewController, FTPSSessionDelegate {
     super.viewWillAppear()
     if hasStarted == false && activeSession != nil && filePaths != nil {
       self.fileProgressIndicator.maxValue = Double(self.filePaths!.count)
-      self.fileProgressLabel.stringValue = StringFromFileProgress(self.filePaths!.count, 0)
+      self.fileProgressLabel.stringValue = StringFromFileProgress(totalFiles: self.filePaths!.count, now: 0)
       stopRequest = false
       activeSession!.addDelegate(self)
       activeSession!.upload(filePaths!)
@@ -91,7 +91,7 @@ class UploadViewController: NSViewController, FTPSSessionDelegate {
     }
   }
   
-  @IBAction func onCancel(sender: AnyObject) {
+  @IBAction func onCancel(_ sender: AnyObject) {
     stopRequest = true
   }
   
@@ -103,41 +103,41 @@ class UploadViewController: NSViewController, FTPSSessionDelegate {
     stopRequest = false
   }
   
-  func session(session: FTPSSession, uploadProgressForFile filePath: String, totalBytes: Int, now: Int) -> CurlProgress {
+  func session(_ session: FTPSSession, uploadProgressForFile filePath: String, totalBytes: Int, now: Int) -> CurlProgress {
     self.fileNameLabel.stringValue = filePath
     self.byteProgressIndicator.maxValue = Double(totalBytes)
     self.byteProgressIndicator.doubleValue = Double(now)
     self.byteProgressLabel.stringValue = "\(BytesToString(now))/\(BytesToString(totalBytes)) bytes"
-    return stopRequest ? CurlProgress.Abort : CurlProgress.Continue
+    return stopRequest ? CurlProgress.abort : CurlProgress.continue
   }
   
-  func session(session: FTPSSession, didUploadFile filePath: String, totalFiles: Int, now: Int) {
+  func session(_ session: FTPSSession, didUploadFile filePath: String, totalFiles: Int, now: Int) {
     self.fileNameLabel.stringValue = filePath
     self.fileProgressIndicator.maxValue = Double(self.filePaths!.count)
     self.fileProgressIndicator.doubleValue = Double(now)
-    self.fileProgressLabel.stringValue = StringFromFileProgress(totalFiles, now)
+    self.fileProgressLabel.stringValue = StringFromFileProgress(totalFiles: totalFiles, now: now)
   }
   
-  func session(session: FTPSSession, didUploadAllFiles filePaths: [String]) {
-    delegate?.uploadViewController(self, didFinishedWithResult: UploadViewControllerResult.OK)
+  func session(_ session: FTPSSession, didUploadAllFiles filePaths: [String]) {
+    delegate?.uploadViewController(self, didFinishedWithResult: UploadViewControllerResult.ok)
     cleanup()
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
   
-  func session(session: FTPSSession, didFailWithCurlCode curlCode: CurlCode) {
-    delegate?.uploadViewController(self, didFinishedWithResult: UploadViewControllerResult.Error)
+  func session(_ session: FTPSSession, didFailWithCurlCode curlCode: CurlCode) {
+    delegate?.uploadViewController(self, didFinishedWithResult: UploadViewControllerResult.error)
     cleanup()
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
   
-  func session(session: FTPSSession, didFailWithError error: FTPSSession.Error) {
-    delegate?.uploadViewController(self, didFinishedWithResult: UploadViewControllerResult.Error)
+  func session(_ session: FTPSSession, didFailWithError error: FTPSSession.Error) {
+    delegate?.uploadViewController(self, didFinishedWithResult: UploadViewControllerResult.error)
     cleanup()
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
 
-  func session(session: FTPSSession, didChangeDirectory path: String, fileList: [FileListItem]) {}
-  func session(session: FTPSSession, downloadProgressForFile filePath: String, totalBytes: Int, now: Int) -> CurlProgress { return CurlProgress.Continue }
-  func session(session: FTPSSession, didDownloadFile filePath: String, totalFiles: Int, now: Int) {}
-  func session(session: FTPSSession, didDownloadAllFiles filePaths: [String]) {}
+  func session(_ session: FTPSSession, didChangeDirectory path: String, fileList: [FileListItem]) {}
+  func session(_ session: FTPSSession, downloadProgressForFile filePath: String, totalBytes: Int, now: Int) -> CurlProgress { return CurlProgress.continue }
+  func session(_ session: FTPSSession, didDownloadFile filePath: String, totalFiles: Int, now: Int) {}
+  func session(_ session: FTPSSession, didDownloadAllFiles filePaths: [String]) {}
 }

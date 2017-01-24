@@ -25,10 +25,10 @@ THE SOFTWARE.
 import Cocoa
 
 enum ItemState: Int {
-  case Disconnected = 0
-  case ConnectingNoSelection = 1
-  case ConnectingOneSelection = 2
-  case ConnectingMultipleSelection = 3
+  case disconnected = 0
+  case connectingNoSelection = 1
+  case connectingOneSelection = 2
+  case connectingMultipleSelection = 3
 }
 
 let connectItemStates = [true, false, false, false]
@@ -57,93 +57,93 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   @IBOutlet weak var refreshMenu: NSMenuItem!
   @IBOutlet weak var deleteFileMenu: NSMenuItem!
 
-  var state = ItemState.Disconnected
+  var state = ItemState.disconnected
 
-  func applicationDidFinishLaunching(aNotification: NSNotification) {
-    let nc = NSNotificationCenter.defaultCenter()
-    nc.addObserver(self, selector: "didConnect:", name: DidConnectNotification, object: nil)
-    nc.addObserver(self, selector: "didDisconnect:", name: DidDisconnectNotification, object: nil)
-    nc.addObserver(self, selector: "fileListSelectionChanged:", name: FileListSelectionChangedNotification, object: nil)
+  func applicationDidFinishLaunching(_ aNotification: Notification) {
+    let nc = NotificationCenter.default
+    nc.addObserver(self, selector: #selector(AppDelegate.didConnect(_:)), name: NSNotification.Name(rawValue: DidConnectNotification), object: nil)
+    nc.addObserver(self, selector: #selector(AppDelegate.didDisconnect(_:)), name: NSNotification.Name(rawValue: DidDisconnectNotification), object: nil)
+    nc.addObserver(self, selector: #selector(AppDelegate.fileListSelectionChanged(_:)), name: NSNotification.Name(rawValue: FileListSelectionChangedNotification), object: nil)
     
     fileMenu.autoenablesItems = false
     operationMenu.autoenablesItems = false
     updateMenuStates()
   }
   
-  func applicationWillTerminate(aNotification: NSNotification) {
+  func applicationWillTerminate(_ aNotification: Notification) {
   }
   
   func updateMenuStates() {
-    newConnectionMenu.enabled = connectItemStates[state.rawValue]
-    disconnectMenu.enabled = disconnectItemStates[state.rawValue]
-    downloadMenu.enabled = downloadItemStates[state.rawValue]
-    uploadMenu.enabled = uploadItemStates[state.rawValue]
-    makeFolderMenu.enabled = makeFolderItemStates[state.rawValue]
-    renameFileMenu.enabled = renameFileItemStates[state.rawValue]
-    changePermissionsMenu.enabled = changePermissionsItemStates[state.rawValue]
-    refreshMenu.enabled = refreshItemStates[state.rawValue]
-    deleteFileMenu.enabled = deleteFileItemStates[state.rawValue]
+    newConnectionMenu.isEnabled = connectItemStates[state.rawValue]
+    disconnectMenu.isEnabled = disconnectItemStates[state.rawValue]
+    downloadMenu.isEnabled = downloadItemStates[state.rawValue]
+    uploadMenu.isEnabled = uploadItemStates[state.rawValue]
+    makeFolderMenu.isEnabled = makeFolderItemStates[state.rawValue]
+    renameFileMenu.isEnabled = renameFileItemStates[state.rawValue]
+    changePermissionsMenu.isEnabled = changePermissionsItemStates[state.rawValue]
+    refreshMenu.isEnabled = refreshItemStates[state.rawValue]
+    deleteFileMenu.isEnabled = deleteFileItemStates[state.rawValue]
   }
   
-  @IBAction func onNewConnection(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(ConnectNotification, object: nil)
+  @IBAction func onNewConnection(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: ConnectNotification), object: nil)
   }
   
-  @IBAction func onDisonnect(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(DisconnectNotification, object: nil)
+  @IBAction func onDisonnect(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: DisconnectNotification), object: nil)
   }
   
-  @IBAction func onDownload(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(DownloadNotification, object: nil)
+  @IBAction func onDownload(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: DownloadNotification), object: nil)
   }
   
-  @IBAction func onUpload(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(UploadNotification, object: nil)
+  @IBAction func onUpload(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: UploadNotification), object: nil)
   }
   
-  @IBAction func onMakeDirectory(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(MakeDirectoryNotification, object: nil)
+  @IBAction func onMakeDirectory(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: MakeDirectoryNotification), object: nil)
   }
   
-  @IBAction func onRenameFile(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(RenameFileNotification, object: nil)
+  @IBAction func onRenameFile(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: RenameFileNotification), object: nil)
   }
   
-  @IBAction func onChangePermissions(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(ChangePermissionsNotification, object: nil)
+  @IBAction func onChangePermissions(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: ChangePermissionsNotification), object: nil)
   }
   
-  @IBAction func onRefresh(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(RefreshNotification, object: nil)
+  @IBAction func onRefresh(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: RefreshNotification), object: nil)
   }
   
-  @IBAction func onDeleteFile(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(DeleteFileNotification, object: nil)
+  @IBAction func onDeleteFile(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: DeleteFileNotification), object: nil)
   }
   
-  func didConnect(notification: NSNotification) {
-    state = .ConnectingNoSelection
+  func didConnect(_ notification: Notification) {
+    state = .connectingNoSelection
     updateMenuStates()
   }
   
-  func didDisconnect(notification: NSNotification) {
-    state = .Disconnected
+  func didDisconnect(_ notification: Notification) {
+    state = .disconnected
     updateMenuStates()
   }
   
-  func fileListSelectionChanged(notification: NSNotification) {
+  func fileListSelectionChanged(_ notification: Notification) {
     if notification.userInfo == nil || notification.userInfo!["fileNames"] == nil {
       return
     }
     let fileNames = notification.userInfo!["fileNames"] as! [String]
     if fileNames.count == 0 {
-      state = .ConnectingNoSelection
+      state = .connectingNoSelection
     }
     else if fileNames.count == 1 {
-      state = .ConnectingOneSelection
+      state = .connectingOneSelection
     }
     else {
-      state = .ConnectingMultipleSelection
+      state = .connectingMultipleSelection
     }
     updateMenuStates()
   }

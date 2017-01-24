@@ -25,7 +25,7 @@ THE SOFTWARE.
 import Cocoa
 
 protocol ConnectViewControllerDelegate : class {
-  func connectViewController(connectViewController: ConnectViewController, didFinishWithResult: ConnectViewControllerResult?)
+  func connectViewController(_ connectViewController: ConnectViewController, didFinishWithResult: ConnectViewControllerResult?)
 }
 
 struct ConnectViewControllerResult {
@@ -94,7 +94,7 @@ class ConnectViewController: NSViewController {
     }
   }
   
-  @IBAction func onOK(sender: AnyObject) {
+  @IBAction func onOK(_ sender: AnyObject) {
     let hostName = hostNameTextField.stringValue
     if hostName.isEmpty {
       hostNameTextField.becomeFirstResponder()
@@ -115,11 +115,11 @@ class ConnectViewController: NSViewController {
     result.password = password
     result.path = path
     delegate?.connectViewController(self, didFinishWithResult: result)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
   
-  @IBAction func onCancel(sender: AnyObject) {
+  @IBAction func onCancel(_ sender: AnyObject) {
     delegate?.connectViewController(self, didFinishWithResult: nil)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
 }

@@ -25,7 +25,7 @@ THE SOFTWARE.
 import Cocoa
 
 protocol MakeDirectoryViewControllerDelegate : class {
-  func makeDirectoryViewController(makeDirectoryViewController: MakeDirectoryViewController,
+  func makeDirectoryViewController(_ makeDirectoryViewController: MakeDirectoryViewController,
     didFinishWithResult: MakeDirectoryViewControllerResult?)
 }
 
@@ -42,32 +42,32 @@ class MakeDirectoryViewController: NSViewController {
     super.viewDidLoad()
   }
   
-  @IBAction func onOK(sender: AnyObject) {
+  @IBAction func onOK(_ sender: AnyObject) {
     let directoryName = self.directoryNameTextField.stringValue as NSString
     if directoryName.length == 0 {
       let alert = NSAlert()
       alert.messageText = "Directory name is empty"
       alert.informativeText = "Directory name must not be empty."
-      alert.alertStyle = NSAlertStyle.WarningAlertStyle
+      alert.alertStyle = NSAlertStyle.warning
       alert.runModal()
       return
     }
-    else if directoryName.rangeOfString("/").location != NSNotFound {
+    else if directoryName.range(of: "/").location != NSNotFound {
       let alert = NSAlert()
       alert.messageText = "Invalid directory name"
       alert.informativeText = "Directory name must not contain '/'."
-      alert.alertStyle = NSAlertStyle.WarningAlertStyle
+      alert.alertStyle = NSAlertStyle.warning
       alert.runModal()
       return
     }
     var result = MakeDirectoryViewControllerResult()
     result.directoryName = directoryNameTextField.stringValue
     delegate?.makeDirectoryViewController(self, didFinishWithResult: result)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
   
-  @IBAction func onCancel(sender: AnyObject) {
+  @IBAction func onCancel(_ sender: AnyObject) {
     delegate?.makeDirectoryViewController(self, didFinishWithResult: nil)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
 }

@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 import Cocoa
 
-func NormalizePath(path: String) -> String {
+func NormalizePath(_ path: String) -> String {
   var newPath = path
   if newPath == "" {
     newPath = "/"
@@ -48,7 +48,7 @@ class FTPSManager {
   var sessions = [FTPSSession]()
   var activeSession: FTPSSession?
   
-  func createSession(hostName: String, userName: String, password: String) -> FTPSSession? {
+  func createSession(_ hostName: String, userName: String, password: String) -> FTPSSession? {
     if sessions.count > MaxConcurrentConnections {
       return nil
     }

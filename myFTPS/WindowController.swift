@@ -47,23 +47,23 @@ class WindowController: NSWindowController {
   @IBOutlet weak var uploadButton: NSSegmentedControl!
   @IBOutlet weak var refreshButton: NSSegmentedControl!
   @IBOutlet weak var progressIndicator: NSProgressIndicator!
-  var state = ItemState.Disconnected
+  var state = ItemState.disconnected
   
   override func windowDidLoad() {
     super.windowDidLoad()
 
     toolbar.windowController = self
     
-    let nc = NSNotificationCenter.defaultCenter()
-    nc.addObserver(self, selector: "taskStart:", name: TaskStartNotification, object: nil)
-    nc.addObserver(self, selector: "taskEnd:", name: TaskEndNotification, object: nil)
-    nc.addObserver(self, selector: "didConnect:", name: DidConnectNotification, object: nil)
-    nc.addObserver(self, selector: "didDisconnect:", name: DidDisconnectNotification, object: nil)
-    nc.addObserver(self, selector: "fileListSelectionChanged:", name: FileListSelectionChangedNotification, object: nil)
+    let nc = NotificationCenter.default
+    nc.addObserver(self, selector: #selector(WindowController.taskStart(_:)), name: NSNotification.Name(rawValue: TaskStartNotification), object: nil)
+    nc.addObserver(self, selector: #selector(WindowController.taskEnd(_:)), name: NSNotification.Name(rawValue: TaskEndNotification), object: nil)
+    nc.addObserver(self, selector: #selector(WindowController.didConnect(_:)), name: NSNotification.Name(rawValue: DidConnectNotification), object: nil)
+    nc.addObserver(self, selector: #selector(WindowController.didDisconnect(_:)), name: NSNotification.Name(rawValue: DidDisconnectNotification), object: nil)
+    nc.addObserver(self, selector: #selector(WindowController.fileListSelectionChanged(_:)), name: NSNotification.Name(rawValue: FileListSelectionChangedNotification), object: nil)
   }
   
   deinit {
-    let nc = NSNotificationCenter.defaultCenter()
+    let nc = NotificationCenter.default
     nc.removeObserver(self)
   }
   
@@ -72,107 +72,107 @@ class WindowController: NSWindowController {
       return
     }
     for i in 0 ..< toolbar.visibleItems!.count {
-      let item = toolbar.visibleItems![i] as! NSToolbarItem
+      let item = toolbar.visibleItems![i] 
       if let view = item.view {
         let segmentedControl = view as? NSSegmentedControl
         if segmentedControl == connectButton {
-          item.enabled = connectItemStates[state.rawValue]
+          item.isEnabled = connectItemStates[state.rawValue]
         }
         else if segmentedControl == disconnectButton {
-          item.enabled = disconnectItemStates[state.rawValue]
+          item.isEnabled = disconnectItemStates[state.rawValue]
         }
         else if segmentedControl == makeFolderButton {
-          item.enabled = makeFolderItemStates[state.rawValue]
+          item.isEnabled = makeFolderItemStates[state.rawValue]
         }
         else if segmentedControl == renameFileButton {
-          item.enabled = renameFileItemStates[state.rawValue]
+          item.isEnabled = renameFileItemStates[state.rawValue]
         }
         else if segmentedControl == changePermissionsButton {
-          item.enabled = changePermissionsItemStates[state.rawValue]
+          item.isEnabled = changePermissionsItemStates[state.rawValue]
         }
         else if segmentedControl == deleteFileButton {
-          item.enabled = deleteFileItemStates[state.rawValue]
+          item.isEnabled = deleteFileItemStates[state.rawValue]
         }
         else if segmentedControl == downloadButton {
-          item.enabled = downloadItemStates[state.rawValue]
+          item.isEnabled = downloadItemStates[state.rawValue]
         }
         else if segmentedControl == uploadButton {
-          item.enabled = uploadItemStates[state.rawValue]
+          item.isEnabled = uploadItemStates[state.rawValue]
         }
         else if segmentedControl == refreshButton {
-          item.enabled = refreshItemStates[state.rawValue]
+          item.isEnabled = refreshItemStates[state.rawValue]
         }
       }
     }
   }
   
-  @IBAction func onConnect(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(ConnectNotification, object: self)
+  @IBAction func onConnect(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: ConnectNotification), object: self)
   }
   
-  @IBAction func onDisconnect(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(DisconnectNotification, object: self)
+  @IBAction func onDisconnect(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: DisconnectNotification), object: self)
   }
   
-  @IBAction func onMakeDirectory(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(MakeDirectoryNotification, object: self)
+  @IBAction func onMakeDirectory(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: MakeDirectoryNotification), object: self)
   }
   
-  @IBAction func onRenameFile(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(RenameFileNotification, object: self)
+  @IBAction func onRenameFile(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: RenameFileNotification), object: self)
   }
   
-  @IBAction func onChangePermissions(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(ChangePermissionsNotification, object: self)
+  @IBAction func onChangePermissions(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: ChangePermissionsNotification), object: self)
   }
   
-  @IBAction func onDeleteFile(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(DeleteFileNotification, object: self)
+  @IBAction func onDeleteFile(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: DeleteFileNotification), object: self)
   }
   
-  @IBAction func onDownload(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(DownloadNotification, object: self)
+  @IBAction func onDownload(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: DownloadNotification), object: self)
   }
   
-  @IBAction func onUpload(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(UploadNotification, object: self)
+  @IBAction func onUpload(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: UploadNotification), object: self)
   }
   
-  @IBAction func onRefresh(sender: AnyObject) {
-    NSNotificationCenter.defaultCenter().postNotificationName(RefreshNotification, object: self)
+  @IBAction func onRefresh(_ sender: AnyObject) {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: RefreshNotification), object: self)
   }
   
-  func taskStart(notification: NSNotification) {
-    progressIndicator.hidden = false
+  func taskStart(_ notification: Notification) {
+    progressIndicator.isHidden = false
     progressIndicator.startAnimation(self)
   }
   
-  func taskEnd(notification: NSNotification) {
+  func taskEnd(_ notification: Notification) {
     progressIndicator.stopAnimation(self)
-    progressIndicator.hidden = true
+    progressIndicator.isHidden = true
   }
   
-  func didConnect(notification: NSNotification) {
-    state = .ConnectingNoSelection
+  func didConnect(_ notification: Notification) {
+    state = .connectingNoSelection
   }
   
-  func didDisconnect(notification: NSNotification) {
-    state = .Disconnected
+  func didDisconnect(_ notification: Notification) {
+    state = .disconnected
   }
   
-  func fileListSelectionChanged(notification: NSNotification) {
+  func fileListSelectionChanged(_ notification: Notification) {
     if notification.userInfo == nil || notification.userInfo!["fileNames"] == nil {
       return
     }
     let fileNames = notification.userInfo!["fileNames"] as! [String]
     if fileNames.count == 0 {
-      state = .ConnectingNoSelection
+      state = .connectingNoSelection
     }
     else if fileNames.count == 1 {
-      state = .ConnectingOneSelection
+      state = .connectingOneSelection
     }
     else {
-      state = .ConnectingMultipleSelection
+      state = .connectingMultipleSelection
     }
   }
 }

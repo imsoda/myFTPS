@@ -35,7 +35,7 @@ class MainViewController: NSSplitViewController {
     super.viewDidAppear()
     
     if firstInit {
-      self.splitView.setPosition(100, ofDividerAtIndex: 0)
+      self.splitView.setPosition(100, ofDividerAt: 0)
       firstInit = false
     }
   }

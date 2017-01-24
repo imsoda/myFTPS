@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 import Foundation
 
-class ServerListItem : NSObject, NSCoding, Printable {
+class ServerListItem : NSObject, NSCoding {
   var itemName = ""
   var hostName = ""
   var userName = ""
@@ -33,25 +33,25 @@ class ServerListItem : NSObject, NSCoding, Printable {
   override init() {}
   
   required init(coder aDecoder: NSCoder) {
-    let itemName = aDecoder.decodeObjectOfClass(NSString.self, forKey: "itemName") as? String
+    let itemName = aDecoder.decodeObject(of: NSString.self, forKey: "itemName") as? String
     self.itemName = itemName != nil ? itemName! : "itemName\(arc4random())"
     
-    let hostName = aDecoder.decodeObjectOfClass(NSString.self, forKey: "hostName") as? String
+    let hostName = aDecoder.decodeObject(of: NSString.self, forKey: "hostName") as? String
     self.hostName = hostName != nil ? hostName! : ""
     
-    let userName = aDecoder.decodeObjectOfClass(NSString.self, forKey: "userName") as? String
+    let userName = aDecoder.decodeObject(of: NSString.self, forKey: "userName") as? String
     self.userName = userName != nil ? userName! : ""
     
-    let path = aDecoder.decodeObjectOfClass(NSString.self, forKey: "path") as? String
+    let path = aDecoder.decodeObject(of: NSString.self, forKey: "path") as? String
     self.path = path != nil ? path! : "/"
   }
   
-  func encodeWithCoder(aCoder: NSCoder) {
+  func encode(with aCoder: NSCoder) {
     
-    aCoder.encodeObject(itemName, forKey: "itemName")
-    aCoder.encodeObject(hostName, forKey: "hostName")
-    aCoder.encodeObject(userName, forKey: "userName")
-    aCoder.encodeObject(path, forKey: "path")
+    aCoder.encode(itemName, forKey: "itemName")
+    aCoder.encode(hostName, forKey: "hostName")
+    aCoder.encode(userName, forKey: "userName")
+    aCoder.encode(path, forKey: "path")
   }
   override var description: String { get {
     return "{itemName=\(itemName),hostName=\(hostName),userName=\(userName),path=\(path)}"
@@ -67,7 +67,7 @@ class ServerList {
     list = loadList()
   }
 
-  func indexOfItem(#hostName: String, userName: String, path: String) -> Int {
+  func indexOfItem(_ hostName: String, _ userName: String, path: String) -> Int {
     for i in 0 ..< list.count {
       if list[i].hostName == hostName && list[i].userName == userName && list[i].path == path {
         return i
@@ -76,7 +76,7 @@ class ServerList {
     return -1
   }
   
-  func indexOfItem(#itemName: String) -> Int {
+  func indexOf(itemName: String) -> Int {
     for i in 0 ..< list.count {
       if list[i].itemName == itemName {
         return i
@@ -85,29 +85,29 @@ class ServerList {
     return -1
   }
   
-  func add(item: ServerListItem) -> Int {
-    let index = indexOfItem(itemName: item.itemName)
+  func add(_ item: ServerListItem) -> Int {
+    let index = indexOf(itemName: item.itemName)
     assert(index < 0)
     list.append(item)
     list.sort { (item1, item2) -> Bool in
       return item1.itemName < item2.itemName
     }
     storeList(list)
-    return indexOfItem(itemName: item.itemName)
+    return indexOf(itemName: item.itemName)
   }
   
-  func remove(item: ServerListItem) {
-    let index = indexOfItem(itemName: item.itemName)
+  func remove(_ item: ServerListItem) {
+    let index = indexOf(itemName: item.itemName)
     assert(index >= 0)
-    list.removeAtIndex(index)
+    list.remove(at: index)
     storeList(list)
   }
   
-  func rename(#oldItemName: String, newItemName: String) {
-    let index = indexOfItem(itemName: oldItemName)
+  func rename(oldItemName: String, newItemName: String) {
+    let index = indexOf(itemName: oldItemName)
     assert(index >= 0)
-    assert(indexOfItem(itemName: newItemName) < 0)
-    var item = list[index]
+    assert(indexOf(itemName: newItemName) < 0)
+    let item = list[index]
     item.itemName = newItemName
     list.sort { (item1, item2) -> Bool in
       return item1.itemName < item2.itemName
@@ -128,18 +128,18 @@ class ServerList {
     return list.count
   }
   
-  func storeList(list: [ServerListItem]) {
-    var data = NSKeyedArchiver.archivedDataWithRootObject(list)
-    let userDefault = NSUserDefaults.standardUserDefaults()
-    userDefault.setObject(data, forKey: KEY)
+  func storeList(_ list: [ServerListItem]) {
+    let data = NSKeyedArchiver.archivedData(withRootObject: list)
+    let userDefault = UserDefaults.standard
+    userDefault.set(data, forKey: KEY)
   }
   
   func loadList() -> [ServerListItem] {
-    let userDefault = NSUserDefaults.standardUserDefaults()
-    if userDefault.objectForKey(KEY) != nil {
-      var data = userDefault.objectForKey(KEY) as? NSData
+    let userDefault = UserDefaults.standard
+    if userDefault.object(forKey: KEY) != nil {
+      let data = userDefault.object(forKey: KEY) as? Data
       if data != nil {
-        let list = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as? [ServerListItem]
+        let list = NSKeyedUnarchiver.unarchiveObject(with: data!) as? [ServerListItem]
         if list != nil {
           return list!
         }

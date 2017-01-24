@@ -25,7 +25,7 @@ THE SOFTWARE.
 import Cocoa
 
 protocol ChangePermissionsViewControllerDelegate: class {
-  func changePermissionsViewController(changePermissionsViewController: ChangePermissionsViewController, didFinishWithResult: ChangePermissionsViewControllerResult?)
+  func changePermissionsViewController(_ changePermissionsViewController: ChangePermissionsViewController, didFinishWithResult: ChangePermissionsViewControllerResult?)
 }
 
 struct ChangePermissionsViewControllerResult {
@@ -69,9 +69,9 @@ class ChangePermissionsViewController: NSViewController {
       let other = fileListItem!.otherPermissions as NSString
       
       if user.length == 3 {
-        self.userReadCheckbox.state = user.substringWithRange(NSRange(location: 0, length: 1)) == "r" ? NSOnState : NSOffState
-        self.userWriteCheckbox.state = user.substringWithRange(NSRange(location: 1, length: 1)) == "w" ? NSOnState : NSOffState
-        self.userExecuteCheckbox.state = user.substringWithRange(NSRange(location: 2, length: 1)) == "x" ? NSOnState : NSOffState
+        self.userReadCheckbox.state = user.substring(with: NSRange(location: 0, length: 1)) == "r" ? NSOnState : NSOffState
+        self.userWriteCheckbox.state = user.substring(with: NSRange(location: 1, length: 1)) == "w" ? NSOnState : NSOffState
+        self.userExecuteCheckbox.state = user.substring(with: NSRange(location: 2, length: 1)) == "x" ? NSOnState : NSOffState
       }
       else {
         self.userReadCheckbox.state = NSOffState
@@ -80,9 +80,9 @@ class ChangePermissionsViewController: NSViewController {
       }
       
       if group.length == 3 {
-        self.groupReadCheckbox.state = group.substringWithRange(NSRange(location: 0, length: 1)) == "r" ? NSOnState : NSOffState
-        self.groupWriteCheckbox.state = group.substringWithRange(NSRange(location: 1, length: 1)) == "w" ? NSOnState : NSOffState
-        self.groupExecuteCheckbox.state = group.substringWithRange(NSRange(location: 2, length: 1)) == "x" ? NSOnState : NSOffState
+        self.groupReadCheckbox.state = group.substring(with: NSRange(location: 0, length: 1)) == "r" ? NSOnState : NSOffState
+        self.groupWriteCheckbox.state = group.substring(with: NSRange(location: 1, length: 1)) == "w" ? NSOnState : NSOffState
+        self.groupExecuteCheckbox.state = group.substring(with: NSRange(location: 2, length: 1)) == "x" ? NSOnState : NSOffState
       }
       else {
         self.groupReadCheckbox.state = NSOffState
@@ -91,9 +91,9 @@ class ChangePermissionsViewController: NSViewController {
       }
       
       if other.length == 3 {
-        self.otherReadCheckbox.state = other.substringWithRange(NSRange(location: 0, length: 1)) == "r" ? NSOnState : NSOffState
-        self.otherWriteCheckbox.state = other.substringWithRange(NSRange(location: 1, length: 1)) == "w" ? NSOnState : NSOffState
-        self.otherExecuteCheckbox.state = other.substringWithRange(NSRange(location: 2, length: 1)) == "x" ? NSOnState : NSOffState
+        self.otherReadCheckbox.state = other.substring(with: NSRange(location: 0, length: 1)) == "r" ? NSOnState : NSOffState
+        self.otherWriteCheckbox.state = other.substring(with: NSRange(location: 1, length: 1)) == "w" ? NSOnState : NSOffState
+        self.otherExecuteCheckbox.state = other.substring(with: NSRange(location: 2, length: 1)) == "x" ? NSOnState : NSOffState
       }
       else {
         self.otherReadCheckbox.state = NSOffState
@@ -104,7 +104,7 @@ class ChangePermissionsViewController: NSViewController {
     }
   }
   
-  @IBAction func onOK(sender: AnyObject) {
+  @IBAction func onOK(_ sender: AnyObject) {
     var user: UInt = 0
     if self.userReadCheckbox.state == NSOnState {
       user += 4
@@ -142,11 +142,11 @@ class ChangePermissionsViewController: NSViewController {
     result.permissions = (user * (16 * 16) + group * 16 + other) as UInt
 
     delegate?.changePermissionsViewController(self, didFinishWithResult: result)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
   
-  @IBAction func onCancel(sender: AnyObject) {
+  @IBAction func onCancel(_ sender: AnyObject) {
     delegate?.changePermissionsViewController(self, didFinishWithResult: nil)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
 }

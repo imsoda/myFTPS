@@ -25,7 +25,7 @@ THE SOFTWARE.
 import Cocoa
 
 protocol RenameFileViewControllerDelegate: class {
-  func renameFileViewController(renameFileViewController: RenameFileViewController, didFinishWithResult: RenameFileViewControllerResult?)
+  func renameFileViewController(_ renameFileViewController: RenameFileViewController, didFinishWithResult: RenameFileViewControllerResult?)
 }
 
 struct RenameFileViewControllerResult {
@@ -54,21 +54,21 @@ class RenameFileViewController: NSViewController {
     }
   }
   
-  @IBAction func onOK(sender: AnyObject) {
+  @IBAction func onOK(_ sender: AnyObject) {
     let newFileName = newFileNameTextField.stringValue
     if newFileName.isEmpty {
       let alert = NSAlert()
       alert.messageText = "New file name is empty"
       alert.informativeText = "New file name must not be empty."
-      alert.alertStyle = NSAlertStyle.WarningAlertStyle
+      alert.alertStyle = NSAlertStyle.warning
       alert.runModal()
       return
     }
-    else if newFileName.rangeOfString("/") != nil {
+    else if newFileName.range(of: "/") != nil {
       let alert = NSAlert()
       alert.messageText = "Invalid file name"
       alert.informativeText = "File name must not contain '/'."
-      alert.alertStyle = NSAlertStyle.WarningAlertStyle
+      alert.alertStyle = NSAlertStyle.warning
       alert.runModal()
       return
     }
@@ -76,11 +76,11 @@ class RenameFileViewController: NSViewController {
     result.oldFileName = oldFileName
     result.newFileName = newFileName
     delegate?.renameFileViewController(self, didFinishWithResult: result)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
   
-  @IBAction func onCancel(sender: AnyObject) {
+  @IBAction func onCancel(_ sender: AnyObject) {
     delegate?.renameFileViewController(self, didFinishWithResult: nil)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
 }

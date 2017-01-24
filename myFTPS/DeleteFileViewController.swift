@@ -25,7 +25,7 @@ THE SOFTWARE.
 import Cocoa
 
 protocol DeleteFileViewControllerDelegate: class {
-  func deleteFileViewController(deleteFileViewController: DeleteFileViewController, didFinishWithResult result: DeleteFileViewControllerResult?)
+  func deleteFileViewController(_ deleteFileViewController: DeleteFileViewController, didFinishWithResult result: DeleteFileViewControllerResult?)
 }
 
 struct DeleteFileViewControllerResult {
@@ -57,14 +57,14 @@ class DeleteFileViewController: NSViewController {
     }
   }
   
-  @IBAction func onYes(sender: AnyObject) {
-    var result = DeleteFileViewControllerResult(fileItem: fileItem!)
+  @IBAction func onYes(_ sender: AnyObject) {
+    let result = DeleteFileViewControllerResult(fileItem: fileItem!)
     delegate?.deleteFileViewController(self, didFinishWithResult: result)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
   
-  @IBAction func onNo(sender: AnyObject) {
+  @IBAction func onNo(_ sender: AnyObject) {
     delegate?.deleteFileViewController(self, didFinishWithResult: nil)
-    presentingViewController?.dismissViewController(self)
+    presenting?.dismissViewController(self)
   }
 }

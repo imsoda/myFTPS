@@ -155,14 +155,14 @@ typedef NS_OPTIONS(NSUInteger, CurlHTTPVersion) {
 @class Curl;
 @class CurlInfo;
 
-typedef NSInteger (^WriteFunction)(const unsigned char *buffer, NSInteger size);
-typedef NSInteger (^ReadFunction)(unsigned char *buffer, NSInteger size);
+typedef NSInteger (^WriteFunction)(const unsigned char * _Nonnull buffer, NSInteger size);
+typedef NSInteger (^ReadFunction)(unsigned char * _Nonnull buffer, NSInteger size);
 typedef CurlProgress (^ProgressFunction)(double downloadTotal, double downloadNow,
                                       double uploadTotal, double uploadNow);
 typedef CurlProgress (^XferInfoFunction)(long downloadTotal, long downloadNow,
                                          long uploadTotal, long uploadNow);
-typedef NSInteger (^HeaderFunction)(const unsigned char *buffer, NSInteger size);
-typedef CurlCode (^SSLCtxFunction)(Curl *curl, void *sslCtx);
+typedef NSInteger (^HeaderFunction)(const unsigned char *  _Nonnull buffer, NSInteger size);
+typedef CurlCode (^SSLCtxFunction)(Curl * _Nonnull curl, void * _Nonnull sslCtx);
 
 typedef void (^SetOptErrorCallback)(CurlCode errorCode);
 typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
@@ -183,7 +183,7 @@ typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
 /**
  curl_easy_strerror - return string describing error code
  */
-+ (NSString *)errorString:(CurlCode)code;
++ (NSString * _Nonnull)errorString:(CurlCode)code;
 
 #pragma mark - BEHAVIOR OPTIONS
 /**
@@ -211,27 +211,27 @@ typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
 /**
  CURLOPT_WRITEFUNCTION - set callback for writing received data
  */
-@property (nonatomic, copy) WriteFunction writeFunction;
+@property (nonatomic, copy, nullable) WriteFunction writeFunction;
 /**
  CURLOPT_READFUNCTION - read callback for data uploads
  */
-@property (nonatomic, copy) ReadFunction readFunction;
+@property (nonatomic, copy, nullable) ReadFunction readFunction;
 /**
  CURLOPT_PROGRESSFUNCTION - callback to progress meter function
  */
-@property (nonatomic, copy) ProgressFunction progressFunction;
+@property (nonatomic, copy, nullable) ProgressFunction progressFunction;
 /**
  CURLOPT_XFERINFOFUNCTION - callback to progress meter function
  */
-@property (nonatomic, copy) XferInfoFunction xferInfoFunction;
+@property (nonatomic, copy, nullable) XferInfoFunction xferInfoFunction;
 /**
  CURLOPT_HEADERFUNCTION - callback that receives header data
  */
-@property (nonatomic, copy) HeaderFunction headerFunction;
+@property (nonatomic, copy, nullable) HeaderFunction headerFunction;
 /**
  CURLOPT_SSL_CTX_FUNCTION - openssl specific callback to do SSL magic
  */
-@property (nonatomic, copy) SSLCtxFunction SSLCtxFunction;
+@property (nonatomic, copy, nullable) SSLCtxFunction SSLCtxFunction;
 
 #pragma mark - ERROR OPTIONS
 /**
@@ -243,11 +243,11 @@ typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
 /**
  CURLOPT_URL - provide the URL to use in the request
  */
-@property (nonatomic, copy) NSString *URL;
+@property (nonatomic, copy, nullable) NSString *URL;
 /**
  CURLOPT_PROXY - set proxy to use
  */
-@property (nonatomic, copy) NSString *proxy;
+@property (nonatomic, copy, nullable) NSString *proxy;
 /**
  CURLOPT_PROXYPORT - port number the proxy listens on
  */
@@ -255,25 +255,25 @@ typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
 /**
  CURLOPT_NOPROXY - disable proxy use for specific hosts
  */
-@property (nonatomic, copy) NSString *noProxy;
+@property (nonatomic, copy, nullable) NSString *noProxy;
 
 #pragma mark - NAMES and PASSWORDS OPTIONS
 /**
  CURLOPT_USERNAME - user name to use in authentication
  */
-@property (nonatomic, copy) NSString *username;
+@property (nonatomic, copy, nullable) NSString *username;
 /**
  CURLOPT_PASSWORD - password to use in authentication
  */
-@property (nonatomic, copy) NSString *password;
+@property (nonatomic, copy, nullable) NSString *password;
 /**
  CURLOPT_PROXYUSERNAME - user name to use for proxy authentication
  */
-@property (nonatomic, copy) NSString *proxyUsername;
+@property (nonatomic, copy, nullable) NSString *proxyUsername;
 /**
  CURLOPT_PROXYPASSWORD - password to use with proxy authentication
  */
-@property (nonatomic, copy) NSString *proxyPassword;
+@property (nonatomic, copy, nullable) NSString *proxyPassword;
 /**
  CURLOPT_HTTPAUTH - set HTTP server authentication methods to try
  */
@@ -283,7 +283,7 @@ typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
 /**
  CURLOPT_ACCEPT_ENCODING - enables automatic decompression of HTTP downloads
  */
-@property (nonatomic, copy) NSString *acceptEncoding;
+@property (nonatomic, copy, nullable) NSString *acceptEncoding;
 /**
  CURLOPT_FOLLOWLOCATION - follow HTTP 3xx redirects
  */
@@ -299,19 +299,19 @@ typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
 /**
  CURLOPT_COPYPOSTFIELDS - have libcurl copy data to POST
  */
-@property (nonatomic, copy) NSData *postFields;
+@property (nonatomic, copy, nullable) NSData *postFields;
 /**
  CURLOPT_USERAGENT - set HTTP user-agent header
  */
-@property (nonatomic, copy) NSString *userAgent;
+@property (nonatomic, copy, nullable) NSString *userAgent;
 /**
  CURLOPT_HTTPHEADER - set custom HTTP headers
  */
-@property (nonatomic, copy) NSArray *HTTPHeader;
+@property (nonatomic, copy, nonnull) NSArray *HTTPHeader;
 /**
  CURLOPT_COOKIE - set contents of HTTP Cookie header
  */
-@property (nonatomic, copy) NSString *cookie;
+@property (nonatomic, copy, nullable) NSString *cookie;
 /**
  CURLOPT_HTTPGET - ask for a HTTP GET request
  */
@@ -325,15 +325,15 @@ typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
 /**
  CURLOPT_QUOTE - (S)FTP commands to run before transfer
  */
-@property (nonatomic, copy) NSArray *quote;
+@property (nonatomic, copy, nonnull) NSArray *quote;
 /**
  CURLOPT_POSTQUOTE - (S)FTP commands to run after the transfer
  */
-@property (nonatomic, copy) NSArray *postQuote;
+@property (nonatomic, copy, nonnull) NSArray *postQuote;
 /**
  CURLOPT_PREQUOTE - commands to run before FTP or SFTP transfer
  */
-@property (nonatomic, copy) NSString *preQuote;
+@property (nonatomic, copy, nonnull) NSString *preQuote;
 /**
  CURLOPT_FTP_CREATE_MISSING_DIRS - create missing dirs for FTP and SFTP
  */
@@ -347,7 +347,7 @@ typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
 /**
  CURLOPT_CUSTOMREQUEST - custom string for request
  */
-@property (nonatomic, assign) NSString *customRequest;
+@property (nonatomic, copy, nullable) NSString *customRequest;
 /**
  CURLOPT_FILETIME - get the modification time of the remote resource
  */
@@ -391,7 +391,7 @@ typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
 /**
  curl_easy_getinfo - extract information from a curl handle
  */
-@property (nonatomic, strong, readonly) CurlInfo *info;
+@property (nonatomic, strong, readonly, nonnull) CurlInfo *info;
 /**
  curl_easy_perform - perform a blocking file transfer
  */
@@ -411,7 +411,7 @@ typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
 /**
  CURLINFO_EFFECTIVE_URL - receive the last used effective URL.
  */
-@property (nonatomic, readonly) NSString *effectiveURL;
+@property (nonatomic, readonly, nullable) NSString *effectiveURL;
 /**
  CURLINFO_RESPONSE_CODE - receive the last received HTTP, FTP or SMTP response code.
  */
@@ -435,11 +435,11 @@ typedef void (^GetInfoErrorCallback)(CurlCode errorCode);
 /**
  CURLINFO_CONTENT_TYPE - receive the content-type of the downloaded object.
  */
-@property (nonatomic, readonly) NSString *contentType;
+@property (nonatomic, readonly, nullable) NSString *contentType;
 /**
  CURLINFO_FTP_ENTRY_PATH - receive a pointer to a string holding the path of the entry path.
  */
-@property (nonatomic, readonly) NSString *FTPEntryPath;
+@property (nonatomic, readonly, nullable) NSString *FTPEntryPath;
 @end
 
 #endif /* defined(__Curl__) */
