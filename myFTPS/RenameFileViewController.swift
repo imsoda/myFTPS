@@ -60,7 +60,7 @@ class RenameFileViewController: NSViewController {
       let alert = NSAlert()
       alert.messageText = "New file name is empty"
       alert.informativeText = "New file name must not be empty."
-      alert.alertStyle = NSAlertStyle.warning
+      alert.alertStyle = NSAlert.Style.warning
       alert.runModal()
       return
     }
@@ -68,7 +68,7 @@ class RenameFileViewController: NSViewController {
       let alert = NSAlert()
       alert.messageText = "Invalid file name"
       alert.informativeText = "File name must not contain '/'."
-      alert.alertStyle = NSAlertStyle.warning
+      alert.alertStyle = NSAlert.Style.warning
       alert.runModal()
       return
     }

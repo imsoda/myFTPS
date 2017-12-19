@@ -73,9 +73,9 @@ class FileListTableView: NSTableView {
   
   override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
     let pboard = sender.draggingPasteboard()
-    let types = pboard.types?.filter {($0 as NSString) as String == NSFilenamesPboardType}
+    let types = pboard.types?.filter {($0 as NSString) as String == NSPasteboard.PasteboardType.fileURL.rawValue}
     if types?.count > 0 {
-      if let files = pboard.propertyList(forType: NSFilenamesPboardType) as? [String] {
+      if let files = pboard.propertyList(forType: NSPasteboard.PasteboardType.fileURL) as? [String] {
         dragDelegate?.fileListTableView(self, didDragFiles: files)
         return true
       }

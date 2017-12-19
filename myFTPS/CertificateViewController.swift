@@ -82,7 +82,7 @@ class CertificateViewController: NSViewController, NSTableViewDataSource, NSTabl
     guard let desc = SecCertificateCopyShortDescription(kCFAllocatorDefault, cert, nil) as? String else {
       fatalError()
     }
-    let cell = tableView.make(withIdentifier: "certCell", owner: self) as! NSTableCellView
+    let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "certCell"), owner: self) as! NSTableCellView
     cell.textField?.stringValue = desc
     return cell
   }

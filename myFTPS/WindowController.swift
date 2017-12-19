@@ -142,25 +142,25 @@ class WindowController: NSWindowController {
     NotificationCenter.default.post(name: Notification.Name(rawValue: RefreshNotification), object: self)
   }
   
-  func taskStart(_ notification: Notification) {
+  @objc func taskStart(_ notification: Notification) {
     progressIndicator.isHidden = false
     progressIndicator.startAnimation(self)
   }
   
-  func taskEnd(_ notification: Notification) {
+  @objc func taskEnd(_ notification: Notification) {
     progressIndicator.stopAnimation(self)
     progressIndicator.isHidden = true
   }
   
-  func didConnect(_ notification: Notification) {
+  @objc func didConnect(_ notification: Notification) {
     state = .connectingNoSelection
   }
   
-  func didDisconnect(_ notification: Notification) {
+  @objc func didDisconnect(_ notification: Notification) {
     state = .disconnected
   }
   
-  func fileListSelectionChanged(_ notification: Notification) {
+  @objc func fileListSelectionChanged(_ notification: Notification) {
     if notification.userInfo == nil || notification.userInfo!["fileNames"] == nil {
       return
     }

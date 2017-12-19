@@ -69,36 +69,36 @@ class ChangePermissionsViewController: NSViewController {
       let other = fileListItem!.otherPermissions as NSString
       
       if user.length == 3 {
-        self.userReadCheckbox.state = user.substring(with: NSRange(location: 0, length: 1)) == "r" ? NSOnState : NSOffState
-        self.userWriteCheckbox.state = user.substring(with: NSRange(location: 1, length: 1)) == "w" ? NSOnState : NSOffState
-        self.userExecuteCheckbox.state = user.substring(with: NSRange(location: 2, length: 1)) == "x" ? NSOnState : NSOffState
+        self.userReadCheckbox.state = user.substring(with: NSRange(location: 0, length: 1)) == "r" ? NSControl.StateValue.on : NSControl.StateValue.off
+        self.userWriteCheckbox.state = user.substring(with: NSRange(location: 1, length: 1)) == "w" ? NSControl.StateValue.on : NSControl.StateValue.off
+        self.userExecuteCheckbox.state = user.substring(with: NSRange(location: 2, length: 1)) == "x" ? NSControl.StateValue.on : NSControl.StateValue.off
       }
       else {
-        self.userReadCheckbox.state = NSOffState
-        self.userWriteCheckbox.state = NSOffState
-        self.userExecuteCheckbox.state = NSOffState
+        self.userReadCheckbox.state = NSControl.StateValue.off
+        self.userWriteCheckbox.state = NSControl.StateValue.off
+        self.userExecuteCheckbox.state = NSControl.StateValue.off
       }
       
       if group.length == 3 {
-        self.groupReadCheckbox.state = group.substring(with: NSRange(location: 0, length: 1)) == "r" ? NSOnState : NSOffState
-        self.groupWriteCheckbox.state = group.substring(with: NSRange(location: 1, length: 1)) == "w" ? NSOnState : NSOffState
-        self.groupExecuteCheckbox.state = group.substring(with: NSRange(location: 2, length: 1)) == "x" ? NSOnState : NSOffState
+        self.groupReadCheckbox.state = group.substring(with: NSRange(location: 0, length: 1)) == "r" ? NSControl.StateValue.on : NSControl.StateValue.off
+        self.groupWriteCheckbox.state = group.substring(with: NSRange(location: 1, length: 1)) == "w" ? NSControl.StateValue.on : NSControl.StateValue.off
+        self.groupExecuteCheckbox.state = group.substring(with: NSRange(location: 2, length: 1)) == "x" ? NSControl.StateValue.on : NSControl.StateValue.off
       }
       else {
-        self.groupReadCheckbox.state = NSOffState
-        self.groupWriteCheckbox.state = NSOffState
-        self.groupExecuteCheckbox.state = NSOffState
+        self.groupReadCheckbox.state = NSControl.StateValue.off
+        self.groupWriteCheckbox.state = NSControl.StateValue.off
+        self.groupExecuteCheckbox.state = NSControl.StateValue.off
       }
       
       if other.length == 3 {
-        self.otherReadCheckbox.state = other.substring(with: NSRange(location: 0, length: 1)) == "r" ? NSOnState : NSOffState
-        self.otherWriteCheckbox.state = other.substring(with: NSRange(location: 1, length: 1)) == "w" ? NSOnState : NSOffState
-        self.otherExecuteCheckbox.state = other.substring(with: NSRange(location: 2, length: 1)) == "x" ? NSOnState : NSOffState
+        self.otherReadCheckbox.state = other.substring(with: NSRange(location: 0, length: 1)) == "r" ? NSControl.StateValue.on : NSControl.StateValue.off
+        self.otherWriteCheckbox.state = other.substring(with: NSRange(location: 1, length: 1)) == "w" ? NSControl.StateValue.on : NSControl.StateValue.off
+        self.otherExecuteCheckbox.state = other.substring(with: NSRange(location: 2, length: 1)) == "x" ? NSControl.StateValue.on : NSControl.StateValue.off
       }
       else {
-        self.otherReadCheckbox.state = NSOffState
-        self.otherWriteCheckbox.state = NSOffState
-        self.otherExecuteCheckbox.state = NSOffState
+        self.otherReadCheckbox.state = NSControl.StateValue.off
+        self.otherWriteCheckbox.state = NSControl.StateValue.off
+        self.otherExecuteCheckbox.state = NSControl.StateValue.off
       }
       uiUpdateRequired = false
     }
@@ -106,35 +106,35 @@ class ChangePermissionsViewController: NSViewController {
   
   @IBAction func onOK(_ sender: AnyObject) {
     var user: UInt = 0
-    if self.userReadCheckbox.state == NSOnState {
+    if self.userReadCheckbox.state == NSControl.StateValue.on {
       user += 4
     }
-    if self.userWriteCheckbox.state == NSOnState {
+    if self.userWriteCheckbox.state == NSControl.StateValue.on {
       user += 2
     }
-    if self.userExecuteCheckbox.state == NSOnState {
+    if self.userExecuteCheckbox.state == NSControl.StateValue.on {
       user += 1
     }
     
     var group: UInt = 0
-    if self.groupReadCheckbox.state == NSOnState {
+    if self.groupReadCheckbox.state == NSControl.StateValue.on {
       group += 4
     }
-    if self.groupWriteCheckbox.state == NSOnState {
+    if self.groupWriteCheckbox.state == NSControl.StateValue.on {
       group += 2
     }
-    if self.groupExecuteCheckbox.state == NSOnState {
+    if self.groupExecuteCheckbox.state == NSControl.StateValue.on {
       group += 1
     }
     
     var other: UInt = 0
-    if self.otherReadCheckbox.state == NSOnState {
+    if self.otherReadCheckbox.state == NSControl.StateValue.on {
       other += 4
     }
-    if self.otherWriteCheckbox.state == NSOnState {
+    if self.otherWriteCheckbox.state == NSControl.StateValue.on {
       other += 2
     }
-    if self.otherExecuteCheckbox.state == NSOnState {
+    if self.otherExecuteCheckbox.state == NSControl.StateValue.on {
       other += 1
     }
     var result = ChangePermissionsViewControllerResult()

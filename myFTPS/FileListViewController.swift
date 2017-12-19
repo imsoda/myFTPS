@@ -34,8 +34,8 @@ let RefreshNotification = "RefreshNotification"
 let FileListSelectionChangedNotification = "FileListSelectionChangedNotification"
 
 class FileListViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource, FileListTableViewDragDelegate, FTPSSessionDelegate,  MakeDirectoryViewControllerDelegate, RenameFileViewControllerDelegate, ChangePermissionsViewControllerDelegate, DeleteFileViewControllerDelegate, UploadViewControllerDelegate, DownloadViewControllerDelegate {
-  let fileImage = NSImage(named: "file")
-  let folderImage = NSImage(named: "folder")
+  let fileImage = NSImage(named: NSImage.Name(rawValue: "file"))
+  let folderImage = NSImage(named: NSImage.Name(rawValue: "folder"))
   @IBOutlet weak var pathControl: NSPathControl!
   @IBOutlet weak var tableView: FileListTableView!
   var currentPath = ""
@@ -48,7 +48,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
     tableView.dataSource = self
     tableView.delegate = self
     tableView.dragDelegate = self
-    tableView.register(forDraggedTypes: [NSFilenamesPboardType])
+    tableView.registerForDraggedTypes([NSPasteboard.PasteboardType.fileURL])
     tableView.target = self
     tableView.doubleAction = #selector(FileListViewController.tableViewDoubleClicked(_:))
     
@@ -98,27 +98,27 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
 
   // MARK: - Notification response
   
-  func makeDirectory(_ notification: Notification) {
-    performSegue(withIdentifier: "makeDirectory", sender: self)
+  @objc func makeDirectory(_ notification: Notification) {
+    performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "makeDirectory"), sender: self)
   }
   
-  func renameFile(_ notification: Notification) {
-    performSegue(withIdentifier: "renameFile", sender: self)
+  @objc func renameFile(_ notification: Notification) {
+    performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "renameFile"), sender: self)
   }
   
-  func changePermissions(_ notification: Notification) {
-    performSegue(withIdentifier: "changePermissions", sender: self)
+  @objc func changePermissions(_ notification: Notification) {
+    performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "changePermissions"), sender: self)
   }
   
-  func deleteFile(_ notification: Notification) {
-    performSegue(withIdentifier: "deleteFile", sender: self)
+  @objc func deleteFile(_ notification: Notification) {
+    performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "deleteFile"), sender: self)
   }
   
-  func download(_ notification: Notification) {
+  @objc func download(_ notification: Notification) {
     prepareDownload(selectedFileListItems)
   }
   
-  func upload(_ notification: Notification) {
+  @objc func upload(_ notification: Notification) {
     if FTPSManager.sharedInstance.activeSession == nil {
       return
     }
@@ -127,7 +127,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
     panel.canChooseFiles = true
     panel.allowsMultipleSelection = true
     panel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
-      if result == NSModalResponseOK {
+      if result == NSApplication.ModalResponse.OK {
         let urls = panel.urls 
         if urls.count > 0 {
           var filePaths = [String]()
@@ -157,9 +157,9 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
       alert.informativeText = "\(numberOfOverwriteFiles) files will be overwritten."
       alert.addButton(withTitle: "Cancel")
       alert.addButton(withTitle: "Overwrite")
-      alert.alertStyle = NSAlertStyle.warning
+      alert.alertStyle = NSAlert.Style.warning
       alert.beginSheetModal(for: self.view.window!, completionHandler: { (resp) -> Void in
-        if resp == NSAlertSecondButtonReturn {
+        if resp == NSApplication.ModalResponse.alertSecondButtonReturn {
           self.performUpload(filePaths)
         }
       })
@@ -170,7 +170,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
   }
   
   func performUpload(_ filePaths: [String]) {
-    let uploadViewController = self.storyboard!.instantiateController(withIdentifier: "UploadViewController") as! UploadViewController
+    let uploadViewController = self.storyboard!.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "UploadViewController")) as! UploadViewController
     uploadViewController.activeSession = FTPSManager.sharedInstance.activeSession
     uploadViewController.delegate = self
     uploadViewController.filePaths = filePaths
@@ -203,9 +203,9 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
       alert.informativeText = "\(numberOfOverwriteFiles) files will be overwritten."
       alert.addButton(withTitle: "Cancel")
       alert.addButton(withTitle: "Overwrite")
-      alert.alertStyle = NSAlertStyle.warning
+      alert.alertStyle = NSAlert.Style.warning
       alert.beginSheetModal(for: self.view.window!, completionHandler: { (resp) -> Void in
-        if resp == NSAlertSecondButtonReturn {
+        if resp == NSApplication.ModalResponse.alertSecondButtonReturn {
           self.performDownload(fileItems)
         }
       })
@@ -216,7 +216,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
   }
 
   func performDownload(_ fileItems: [FileListItem]) {
-    let downloadViewController = self.storyboard!.instantiateController(withIdentifier: "DownloadViewController") as! DownloadViewController
+    let downloadViewController = self.storyboard!.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "DownloadViewController")) as! DownloadViewController
     downloadViewController.activeSession = FTPSManager.sharedInstance.activeSession
     downloadViewController.delegate = self
     downloadViewController.fileList = fileItems
@@ -225,7 +225,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
     NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: TaskStartNotification), object: nil))
   }
   
-  func refresh(_ notification: Notification) {
+  @objc func refresh(_ notification: Notification) {
     let activeSession = FTPSManager.sharedInstance.activeSession
     if activeSession == nil {
       return
@@ -234,11 +234,11 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
     activeSession!.changeDirectory(path)
   }
   
-  func didConnect(_ notification: Notification) {
+  @objc func didConnect(_ notification: Notification) {
     FTPSManager.sharedInstance.activeSession?.addDelegate(self)
   }
   
-  func didDisconnect(_ notification: Notification) {
+  @objc func didDisconnect(_ notification: Notification) {
     fileList.removeAll(keepingCapacity: true)
     tableView.reloadData()
     currentPath = ""
@@ -246,29 +246,29 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
   }
   
   // MARK: - NSSeguePerforming
-  override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+  override func shouldPerformSegue(withIdentifier identifier: NSStoryboardSegue.Identifier, sender: Any?) -> Bool {
     let activeSession = FTPSManager.sharedInstance.activeSession
-    if identifier == "renameFile" {
+    if identifier.rawValue == "renameFile" {
       return activeSession != nil && selectedFileListItems.count == 1
     }
-    else if identifier == "changePermissions" {
+    else if identifier.rawValue == "changePermissions" {
       return activeSession != nil && selectedFileListItems.count == 1
     }
-    else if identifier == "deleteFile" {
+    else if identifier.rawValue == "deleteFile" {
       return activeSession != nil && selectedFileListItems.count == 1
     }
-    else if identifier == "download" {
+    else if identifier.rawValue == "download" {
       return activeSession != nil && selectedFileListItems.count > 0
     }
     return true
   }
   
   override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-    if segue.identifier == "makeDirectory" {
+    if segue.identifier == NSStoryboardSegue.Identifier("makeDirectory") {
       let makeDirectoryViewController = segue.destinationController as! MakeDirectoryViewController
       makeDirectoryViewController.delegate = self
     }
-    else if segue.identifier == "renameFile" {
+    else if segue.identifier == NSStoryboardSegue.Identifier("renameFile") {
       if selectedFileListItems.count == 1 {
         let selectedFile = selectedFileListItems.first!
         let renameFileViewController = segue.destinationController as! RenameFileViewController
@@ -276,7 +276,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
         renameFileViewController.oldFileName = selectedFile.fileName
       }
     }
-    else if segue.identifier == "changePermissions" {
+    else if segue.identifier == NSStoryboardSegue.Identifier("changePermissions") {
       if selectedFileListItems.count == 1 {
         let selectedFile = selectedFileListItems.first!
         let changePermissionsViewConteroller = segue.destinationController as! ChangePermissionsViewController
@@ -284,7 +284,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
         changePermissionsViewConteroller.fileListItem = selectedFile
       }
     }
-    else if segue.identifier == "deleteFile" {
+    else if segue.identifier == NSStoryboardSegue.Identifier("deleteFile") {
       if selectedFileListItems.count == 1 {
         let selectedFile = selectedFileListItems.first!
         let deleteFileViewController = segue.destinationController as! DeleteFileViewController
@@ -292,7 +292,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
         deleteFileViewController.fileItem = selectedFile
       }
     }
-    else if segue.identifier == "download" {
+    else if segue.identifier == NSStoryboardSegue.Identifier("download") {
       if selectedFileListItems.count > 0 {
         let downloadViewController = segue.destinationController as! DownloadViewController
         downloadViewController.activeSession = FTPSManager.sharedInstance.activeSession
@@ -316,11 +316,11 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
   
   func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
     if row == 0 {
-      let cell = tableView.make(withIdentifier: "parentFolderCell", owner: self)
+      let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "parentFolderCell"), owner: self)
       return cell
     }
     else {
-      let cell = tableView.make(withIdentifier: "fileCell", owner: self) as! FileCellView
+      let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "fileCell"), owner: self) as! FileCellView
       let listItem = fileList[row - 1]
       if listItem.directory == "d" {
         cell.fileImageView.image = self.folderImage
@@ -349,10 +349,10 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
   }
   
   func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
-    var row = tableView.make(withIdentifier: "fileRow", owner: self) as! FileRowView?
+    var row = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "fileRow"), owner: self) as! FileRowView?
     if row == nil {
       row = FileRowView(frame: NSRect(x: 0, y: 0, width: 320, height: 24))
-      row!.identifier = "fileRow"
+      row!.identifier = NSUserInterfaceItemIdentifier(rawValue: "fileRow")
     }
     return row
   }
@@ -373,7 +373,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
     nc.post(name: Notification.Name(rawValue: FileListSelectionChangedNotification), object: self, userInfo: ["fileNames": fileNames])
   }
   
-  func tableViewDoubleClicked(_ sender: AnyObject) {
+  @objc func tableViewDoubleClicked(_ sender: AnyObject) {
     let index = tableView.selectedRow
     if (0 <= index && index < self.fileList.count + 1) == false {
       return
@@ -468,8 +468,8 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
       }
       
       tableView.beginUpdates()
-      tableView.insertRows(at: added as IndexSet, withAnimation: NSTableViewAnimationOptions.slideDown)
-      tableView.removeRows(at: deleted as IndexSet, withAnimation: NSTableViewAnimationOptions.slideDown)
+      tableView.insertRows(at: added as IndexSet, withAnimation: NSTableView.AnimationOptions.slideDown)
+      tableView.removeRows(at: deleted as IndexSet, withAnimation: NSTableView.AnimationOptions.slideDown)
       tableView.reloadData(forRowIndexes: updated as IndexSet, columnIndexes: IndexSet(integer: 0))
       tableView.endUpdates()
     }
@@ -504,7 +504,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
     let alert = NSAlert()
     alert.messageText = "Operation failed"
     alert.informativeText = "ErrorCode = \(curlCode.rawValue) (\(Curl.errorString(curlCode))), response code = (\(responseCode))"
-    alert.alertStyle = NSAlertStyle.critical
+    alert.alertStyle = NSAlert.Style.critical
     alert.runModal()
     NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: TaskEndNotification), object: nil))
   }
@@ -513,7 +513,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
     let alert = NSAlert()
     alert.messageText = "Operation failed"
     alert.informativeText = "ErrorCode = \(error.rawValue) (\(error))"
-    alert.alertStyle = NSAlertStyle.critical
+    alert.alertStyle = NSAlert.Style.critical
     alert.runModal()
     NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: TaskEndNotification), object: nil))
   }

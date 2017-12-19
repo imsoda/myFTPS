@@ -146,28 +146,28 @@ class FileListParser {
     let nsline = line as NSString
     var item = FileListItem()
     // dir
-    item.directory = nsline.substring(with: result.rangeAt(1))
+    item.directory = nsline.substring(with: result.range(at: 1))
     // user permission
-    item.userPermissions = nsline.substring(with: result.rangeAt(2))
+    item.userPermissions = nsline.substring(with: result.range(at: 2))
     // group permission
-    item.groupPermissions = nsline.substring(with: result.rangeAt(3))
+    item.groupPermissions = nsline.substring(with: result.range(at: 3))
     // other permission
-    item.otherPermissions = nsline.substring(with: result.rangeAt(4))
+    item.otherPermissions = nsline.substring(with: result.range(at: 4))
     // owner
-    item.owner = nsline.substring(with: result.rangeAt(6))
+    item.owner = nsline.substring(with: result.range(at: 6))
     // group
-    item.group = nsline.substring(with: result.rangeAt(7))
+    item.group = nsline.substring(with: result.range(at: 7))
     // size
-    let fileSize: NSString = nsline.substring(with: result.rangeAt(8)) as NSString
+    let fileSize: NSString = nsline.substring(with: result.range(at: 8)) as NSString
     item.fileSize = fileSize.integerValue
     
-    let month = nsline.substring(with: result.rangeAt(9))
-    let day = nsline.substring(with: result.rangeAt(10))
-    let hour = nsline.substring(with: result.rangeAt(11))
-    let minute = nsline.substring(with: result.rangeAt(12))
+    let month = nsline.substring(with: result.range(at: 9))
+    let day = nsline.substring(with: result.range(at: 10))
+    let hour = nsline.substring(with: result.range(at: 11))
+    let minute = nsline.substring(with: result.range(at: 12))
     item.date = "\(month) \(day) \(hour):\(minute)"
     
-    item.fileName = nsline.substring(with: result.rangeAt(13))
+    item.fileName = nsline.substring(with: result.range(at: 13))
     return item;
   }
   
@@ -176,27 +176,27 @@ class FileListParser {
     let nsline = line as NSString
     var item = FileListItem()
     // dir
-    item.directory = nsline.substring(with: result.rangeAt(1))
+    item.directory = nsline.substring(with: result.range(at: 1))
     // user permission
-    item.userPermissions = nsline.substring(with: result.rangeAt(2))
+    item.userPermissions = nsline.substring(with: result.range(at: 2))
     // group permission
-    item.groupPermissions = nsline.substring(with: result.rangeAt(3))
+    item.groupPermissions = nsline.substring(with: result.range(at: 3))
     // other permission
-    item.otherPermissions = nsline.substring(with: result.rangeAt(4))
+    item.otherPermissions = nsline.substring(with: result.range(at: 4))
     // owner
-    item.owner = nsline.substring(with: result.rangeAt(6))
+    item.owner = nsline.substring(with: result.range(at: 6))
     // group
-    item.group = nsline.substring(with: result.rangeAt(7))
+    item.group = nsline.substring(with: result.range(at: 7))
     // size
-    let fileSize: NSString = nsline.substring(with: result.rangeAt(8)) as NSString
+    let fileSize: NSString = nsline.substring(with: result.range(at: 8)) as NSString
     item.fileSize = fileSize.integerValue
 
-    let month = nsline.substring(with: result.rangeAt(9))
-    let day = nsline.substring(with: result.rangeAt(10))
-    let year = nsline.substring(with: result.rangeAt(11))
+    let month = nsline.substring(with: result.range(at: 9))
+    let day = nsline.substring(with: result.range(at: 10))
+    let year = nsline.substring(with: result.range(at: 11))
     item.date = "\(month) \(day) \(year)"
 
-    item.fileName = nsline.substring(with: result.rangeAt(12))
+    item.fileName = nsline.substring(with: result.range(at: 12))
     return item;
   }
 
@@ -205,18 +205,18 @@ class FileListParser {
     let nsline = line as NSString
     var item = FileListItem()
     item.directory = "-"
-    let month = nsline.substring(with: result.rangeAt(1))
-    let day = nsline.substring(with: result.rangeAt(2))
-    let year = nsline.substring(with: result.rangeAt(3))
-    let hour = nsline.substring(with: result.rangeAt(4))
-    let minute = nsline.substring(with: result.rangeAt(5))
-    let ampm = nsline.substring(with: result.rangeAt(6))
+    let month = nsline.substring(with: result.range(at: 1))
+    let day = nsline.substring(with: result.range(at: 2))
+    let year = nsline.substring(with: result.range(at: 3))
+    let hour = nsline.substring(with: result.range(at: 4))
+    let minute = nsline.substring(with: result.range(at: 5))
+    let ampm = nsline.substring(with: result.range(at: 6))
     item.date = "\(month)-\(day)-\(year) \(hour):\(minute)\(ampm)"
   
-    let fileSize: NSString = nsline.substring(with: result.rangeAt(7)) as NSString
+    let fileSize: NSString = nsline.substring(with: result.range(at: 7)) as NSString
     item.fileSize = fileSize.integerValue
   
-    item.fileName = nsline.substring(with: result.rangeAt(8))
+    item.fileName = nsline.substring(with: result.range(at: 8))
     return item
   }
 
@@ -225,17 +225,17 @@ class FileListParser {
     let nsline = line as NSString
     var item = FileListItem()
     item.directory = "d"
-    let month = nsline.substring(with: result.rangeAt(1))
-    let day = nsline.substring(with: result.rangeAt(2))
-    let year = nsline.substring(with: result.rangeAt(3))
-    let hour = nsline.substring(with: result.rangeAt(4))
-    let minute = nsline.substring(with: result.rangeAt(5))
-    let ampm = nsline.substring(with: result.rangeAt(6))
+    let month = nsline.substring(with: result.range(at: 1))
+    let day = nsline.substring(with: result.range(at: 2))
+    let year = nsline.substring(with: result.range(at: 3))
+    let hour = nsline.substring(with: result.range(at: 4))
+    let minute = nsline.substring(with: result.range(at: 5))
+    let ampm = nsline.substring(with: result.range(at: 6))
     item.date = "\(month)-\(day)-\(year) \(hour):\(minute)\(ampm)"
   
     item.fileSize = 0;
   
-    item.fileName = nsline.substring(with: result.rangeAt(7))
+    item.fileName = nsline.substring(with: result.range(at: 7))
     return item
   }
 

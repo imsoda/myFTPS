@@ -48,7 +48,7 @@ class MakeDirectoryViewController: NSViewController {
       let alert = NSAlert()
       alert.messageText = "Directory name is empty"
       alert.informativeText = "Directory name must not be empty."
-      alert.alertStyle = NSAlertStyle.warning
+      alert.alertStyle = NSAlert.Style.warning
       alert.runModal()
       return
     }
@@ -56,7 +56,7 @@ class MakeDirectoryViewController: NSViewController {
       let alert = NSAlert()
       alert.messageText = "Invalid directory name"
       alert.informativeText = "Directory name must not contain '/'."
-      alert.alertStyle = NSAlertStyle.warning
+      alert.alertStyle = NSAlert.Style.warning
       alert.runModal()
       return
     }

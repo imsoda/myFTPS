@@ -121,17 +121,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     NotificationCenter.default.post(name: Notification.Name(rawValue: DeleteFileNotification), object: nil)
   }
   
-  func didConnect(_ notification: Notification) {
+  @objc func didConnect(_ notification: Notification) {
     state = .connectingNoSelection
     updateMenuStates()
   }
   
-  func didDisconnect(_ notification: Notification) {
+  @objc func didDisconnect(_ notification: Notification) {
     state = .disconnected
     updateMenuStates()
   }
   
-  func fileListSelectionChanged(_ notification: Notification) {
+  @objc func fileListSelectionChanged(_ notification: Notification) {
     if notification.userInfo == nil || notification.userInfo!["fileNames"] == nil {
       return
     }

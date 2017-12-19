@@ -73,8 +73,8 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
   
   // MARK: - Notifications
   
-  func connect(_ notification: Notification) {
-    let connectViewController = self.storyboard!.instantiateController(withIdentifier: "connectViewController") as! ConnectViewController
+  @objc func connect(_ notification: Notification) {
+    let connectViewController = self.storyboard!.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "connectViewController")) as! ConnectViewController
     connectViewController.delegate = self
     if let userInfo = notification.userInfo {
       connectViewController.hostName = userInfo["hostName"] != nil ? userInfo["hostName"] as! String : ""
@@ -91,7 +91,7 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
     presentViewControllerAsSheet(connectViewController)
   }
   
-  func disconnect(_ notification: Notification) {
+  @objc func disconnect(_ notification: Notification) {
     let manager = FTPSManager.sharedInstance;
     manager.activeSession?.disconnect()
     manager.activeSession = nil
@@ -101,15 +101,15 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
   
   // MARK: - NSSeguePerforming
   
-  override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-    if identifier == "newConnect" {
+  override func shouldPerformSegue(withIdentifier identifier: NSStoryboardSegue.Identifier, sender: Any?) -> Bool {
+    if identifier.rawValue == "newConnect" {
       return FTPSManager.sharedInstance.activeSession == nil
     }
     return true
   }
   
   override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-    if segue.identifier == "newConnect" {
+    if segue.identifier == NSStoryboardSegue.Identifier("newConnect") {
       let connectViewController = segue.destinationController as! ConnectViewController
       connectViewController.delegate = self
     }
@@ -131,7 +131,7 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
     if manager.activeSession == nil {
       let alert = NSAlert()
       alert.messageText = "Failed to connect the server"
-      alert.alertStyle = NSAlertStyle.critical
+      alert.alertStyle = NSAlert.Style.critical
       alert.runModal()
       return
     }
@@ -154,7 +154,7 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
       array.append(cert)
     }
     
-    let certificateViewController = self.storyboard!.instantiateController(withIdentifier: "certificateViewController") as! CertificateViewController
+    let certificateViewController = self.storyboard!.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "certificateViewController")) as! CertificateViewController
     certificateViewController.certs = certs
     certificateViewController.delegate = self
     self.presentViewControllerAsSheet(certificateViewController)
@@ -208,7 +208,7 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
     self.serverListOutlineView.selectRowIndexes(IndexSet(integer: index), byExtendingSelection: false)
   }
 
-  func rename() {
+  @objc func rename() {
     let index = self.serverListOutlineView.selectedRow
     if index < 0 {
       return
@@ -242,7 +242,7 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
     self.serverListOutlineView.reloadData()
   }
 
-  func delete() {
+  @objc func delete() {
     let index = self.serverListOutlineView.selectedRow
     if index < 0 {
       return
@@ -275,14 +275,14 @@ class ServerListViewController: NSViewController, NSOutlineViewDataSource, NSOut
   // MARK: - NSOutlineViewDelegate
   
   func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-    let cell = outlineView.make(withIdentifier: "serverCell", owner: self) as! NSTableCellView
+    let cell = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "serverCell"), owner: self) as! NSTableCellView
     let serverListItem = item as! ServerListItem
     let index = serverList.indexOf(itemName: serverListItem.itemName)
     cell.textField!.stringValue = serverList[index].itemName
     return cell
   }
   
-  func serverListViewDoubleClicked(_ sender: AnyObject) {
+  @objc func serverListViewDoubleClicked(_ sender: AnyObject) {
     let index = self.serverListOutlineView.selectedRow
     if index < 0 {
       return
