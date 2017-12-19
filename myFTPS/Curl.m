@@ -555,22 +555,22 @@ static CURLcode ssl_ctx_callback(CURL *_curl, void *ssl_ctx, void *userdata)
   _HTTPPost = NO;
 //  _postFields = nil;
   _userAgent = nil;
-  _HTTPHeader = nil;
+  _HTTPHeader = [NSArray array];
   _cookie = nil;
   _HTTPGet = NO;
   _HTTPVersion = CurlHTTPVersion_None;
   
-  _quote = nil;
+  _quote = [NSArray array];
   if (_internal_quote) {
     curl_slist_free_all(_internal_quote);
     _internal_quote = NULL;
   }
-  _postQuote = nil;
+  _postQuote = [NSArray array];
   if (_internal_postQuote) {
     curl_slist_free_all(_internal_postQuote);
     _internal_postQuote = NULL;
   }
-  _preQuote = nil;
+  _preQuote = @"";
   _createMissingDir = NO;
   
   _transferText = NO;
