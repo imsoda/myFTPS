@@ -61,8 +61,8 @@ static void init_locks(void)
     pthread_mutex_init(&(lockarray[i]),NULL);
   }
   
-  CRYPTO_set_id_callback((unsigned long (*)())thread_id);
-  CRYPTO_set_locking_callback((void (*)())lock_callback);
+  CRYPTO_set_id_callback((unsigned long (*)(void))thread_id);
+  CRYPTO_set_locking_callback((void (*)(int, int, const char *, int))lock_callback);
 }
 
 static void kill_locks(void)

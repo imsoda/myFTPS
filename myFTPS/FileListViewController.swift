@@ -127,7 +127,7 @@ class FileListViewController: NSViewController, NSTableViewDelegate, NSTableView
     panel.canChooseFiles = true
     panel.allowsMultipleSelection = true
     panel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
-      if result == NSFileHandlingPanelOKButton {
+      if result == NSModalResponseOK {
         let urls = panel.urls 
         if urls.count > 0 {
           var filePaths = [String]()

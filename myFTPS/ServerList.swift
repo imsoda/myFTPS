@@ -33,17 +33,29 @@ class ServerListItem : NSObject, NSCoding {
   override init() {}
   
   required init(coder aDecoder: NSCoder) {
-    let itemName = aDecoder.decodeObject(of: NSString.self, forKey: "itemName") as? String
-    self.itemName = itemName != nil ? itemName! : "itemName\(arc4random())"
+    if let itemName = aDecoder.decodeObject(of: NSString.self, forKey: "itemName") as String? {
+      self.itemName = itemName
+    } else {
+      self.itemName = "itemName\(arc4random())"
+    }
     
-    let hostName = aDecoder.decodeObject(of: NSString.self, forKey: "hostName") as? String
-    self.hostName = hostName != nil ? hostName! : ""
+    if let hostName = aDecoder.decodeObject(of: NSString.self, forKey: "hostName") as String? {
+      self.hostName = hostName
+    } else {
+      self.hostName = ""
+    }
     
-    let userName = aDecoder.decodeObject(of: NSString.self, forKey: "userName") as? String
-    self.userName = userName != nil ? userName! : ""
+    if let userName = aDecoder.decodeObject(of: NSString.self, forKey: "userName") as String? {
+      self.userName = userName
+    } else {
+      self.userName = ""
+    }
     
-    let path = aDecoder.decodeObject(of: NSString.self, forKey: "path") as? String
-    self.path = path != nil ? path! : "/"
+    if let path = aDecoder.decodeObject(of: NSString.self, forKey: "path") as String? {
+      self.path = path
+    } else {
+      self.path = "/"
+    }
   }
   
   func encode(with aCoder: NSCoder) {
